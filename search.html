@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>RIAARadar Search</title>
+      <meta charset="UTF-8">
+      <script src="jquery.js"></script>
+      <script src="search.js"></script>
+      <script>
+         $(document).ready(function () {
+            RIAARadar.init();
+         });
+      </script>
+   </head>
+   <body>
+      <input id="searchfield" type="text" size="40" placeholder="Enter an artist">
+      <input id="searchbutton" type="button" value="Search">
+      <ol id="results"></ol>
+   </body>
+</html>
