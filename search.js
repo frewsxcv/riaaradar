@@ -9,9 +9,16 @@ var RIAARadar = (function () {
     'use strict';
 
     /**
-     * @class Various MusicBrainz related methods
+     * @namespace Various MusicBrainz related methods
      */
     var MBz = (function () {
+
+        /**
+         * Base URL for the MusicBrainz API
+         * @type string
+         */
+        var baseAPI = "http://www.musicbrainz.org/ws/2/";
+
         /**
          * @constructor
          * @param {jQuery object} jObj MusicBrainz artist from API
@@ -38,36 +45,64 @@ var RIAARadar = (function () {
         }
         /**
          * @methodOf RIAARadar-MBz-Artist
+         * @param {function} callback Function to be executed for each Release
          */
-        Artist.prototype.getReleases = function () {
-            console.error('getReleases not implemented yet');
+        Artist.prototype.getReleases = function (callback) {
+            var mbzQuery = baseAPI + 'release-group?artist=' + this.mbid;
+
+            $.ajax({
+                url: mbzQuery,
+                dataType: 'xml',
+                success: function (data) {
+                    var releases = [];
+                    $(data).find('release-group').each(function () {
+                        releases.push(new Release($(this)));
+                    });
+                    callback(releases);
+                },
+                failure: function () {
+                    alert('Unable to connect to the MusicBrainz servers');
+                }
+            });
         };
 
         /**
          * @constructor
          */
-        function Release() {
+        function Release(jObj) {
+            /**
+             * Title of the release
+             * @type string
+             */
+            this.title = jObj.children('title').text();
+
             /**
              * MusicBrainz identifier associated with the release
              * @type string
              */
-            this.mbid = '';
+            this.mbid = jObj.attr('id');
+
+            /**
+             * Type of release
+             * @type string
+             */
+            this.type = jObj.attr('type');
         }
 
         /**
          * Queries the MusicBrainz database for artists
-         * @param {string} query Name of the artist to search for
-         * @param {function} callback Callback of each Artist
+         * @param {string} name Name of the artist to search for
+         * @param {function} callback Function to be executed for each Artist
          */
-        function artistSearch(query, callback) {
-            var mbzSearch = 'http://www.musicbrainz.org/ws/2/artist?query=',
-                encodedQuery = encodeURIComponent(query);
+        function artistSearch(name, callback) {
+            var mbzQuery = baseAPI + 'artist?query=' +
+                encodeURIComponent(name);
 
             $.ajax({
-                url: mbzSearch + encodedQuery,
+                url: mbzQuery,
                 dataType: 'xml',
                 success: function (data) {
-                    $(data).find('artist').each(function (index) {
+                    $(data).find('artist').each(function () {
                         callback(new Artist($(this)));
                     });
                 },
@@ -83,27 +118,47 @@ var RIAARadar = (function () {
     }());
 
     /**
+     * Shows the releases of the given artist
+     * @param {Artist} artist The artist whose releases will be shown
+     */
+    function showReleases(artist) {
+        var results = $('#results'),
+            result;
+        artist.getReleases(function (releases) {
+            results.empty();
+            $.each(releases, function () {
+                results.append($('<li>' + this.title + '</li>'));
+            });
+        });
+    }
+
+    /**
      * Register search button action
      */
     function registerButton() {
         $('#searchbutton').click(function () {
             var query = $('#searchfield').val(),
-                resultsList = $("#results");
-
-            if ($.support.cors) {
-                resultsList.empty();
-                MBz.artistSearch(query, function (artist) {
-                    resultsList.append('<li>' + artist.name + '</li>');
+                results = $('#results'),
+                result;
+            // Clear the previous results of the query
+            results.empty();
+            MBz.artistSearch(query, function (artist) {
+                result = $('<li>' + artist.name + '</li>');
+                result.click(function () {
+                    showReleases(artist);
                 });
-            } else {
-                alert('Sorry, your browser doesn\'t support CORS');
-            }
+                results.append(result);
+            });
         });
     }
 
     return {
         init: function () {
-            registerButton();
+            if ($.support.cors) {
+                registerButton();
+            } else {
+                alert('Sorry, your browser doesn\'t support CORS');
+            }
         }
     };
 }());
