@@ -67,7 +67,7 @@ var RIAARadar = (function () {
         };
         /**
          * @methodOf RIAARadar-MBz-Artist
-         * @param {function} callback Function to be executed on the image
+         * @param {function} callback Function to be executed on the image URL
          */
         Artist.prototype.getImage = function (callback) {
             $.ajax({
@@ -79,7 +79,7 @@ var RIAARadar = (function () {
                     + '&limit=1',
                 dataType: 'json',
                 success: function (data) {
-                    if (data.images.image) {
+                    if (data.images && data.images.image) {
                         callback(data.images.image.sizes.size[2]['#text']);       
                     }
                 }
@@ -116,7 +116,7 @@ var RIAARadar = (function () {
          */
         function artistSearch(name, callback) {
             var mbzQuery = baseAPI + 'artist?query=' +
-                encodeURIComponent(name) + '&limit=5';
+                encodeURIComponent(name) + '&limit=10';
 
             $.ajax({
                 url: mbzQuery,
@@ -156,19 +156,20 @@ var RIAARadar = (function () {
      * Register search button action
      */
     function registerButton() {
-        $('#searchbutton').click(function () {
-            var query = $('#searchfield').val(),
+        $('#search-button').click(function () {
+            var query = $('#search-field').val(),
                 results = $('#results');
             // Clear the previous results of the query
             results.empty();
             MBz.artistSearch(query, function (artist) {
-                var result = $('<li>' + artist.name + '</li>');
+                var result = $('<li><div id="results-body">' + artist.name + 
+                    '<br>' + artist.disambig + '</div></li>');
                 result.click(function () {
                     showReleases(artist);
                 });
                 results.append(result);
                 artist.getImage(function (image) {
-                    result.append('<img src="' + image + '">');
+                    result.css('background-image', 'url("' + image + '")');
                 });
             });
         });
