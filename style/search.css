@@ -1,0 +1,93 @@
+@font-face {
+   font-family: 'PT Sans';
+   src: url('fonts/pts55f_w.eot');
+   src: local('PT Sans'), 
+      url('fonts/PTS55F_W.woff') format('woff'),
+      url('fonts/PTS55F_W.ttf') format('truetype'),
+      url('fonts/PTS55F_W.svg#PTSans-Regular') format('svg');
+}
+
+body {
+   margin: 0;
+   padding: 0;
+   background: url('img/noise.jpg') white repeat;
+   font-family: 'PT San', sans-serif;
+}
+
+ol, li, ul {
+   margin: 0;
+   padding: 0;
+   list-style-type: none;
+}
+
+input:focus {
+    outline: none;
+}
+
+/* Header */
+
+header {
+   width: 100%;
+   background-color: #d83636;
+   height: 42px;
+   padding: 6px 0;
+   border-bottom: solid white 5px;
+}
+
+
+#logo {
+   background: url('img/logo.png') no-repeat;
+   height: 40px;
+   width: 207px;
+   margin-left: 12px;
+}
+
+/* Body */
+
+#wrapper {
+   max-width: 500px;
+   width: 100%;
+   margin: 0 auto;
+}
+
+#search-box {
+   margin-top: 50px; /* This needs to be more dynamic */
+   border: 1px solid #ccc;
+   height: 25px;
+   padding: 5px 10px 10px;
+   border-radius: 5px;
+   background-color: white;
+}
+
+#search-field {
+   border: none;
+   font-size: 22px;
+   width: 100%
+}
+
+#results {
+   max-height: 200px;
+   overflow-y: auto;
+}
+
+#results li {
+   height: 75px;
+   border-bottom: 1px #ddd solid;
+   border-right: 1px #ddd solid;
+   background: url('img/noartist.png') white no-repeat;
+   background-size: 75px;
+}
+
+#results li:last-child {
+   border-radius: 0px 0px 5px 5px;
+}
+
+#results li:hover {
+   background-color: #eee;
+   cursor: pointer;
+}
+
+#results-body {
+   margin: 5px 0 0 80px;
+   float: left;
+}

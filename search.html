@@ -3,8 +3,9 @@
    <head>
       <title>RIAARadar Search</title>
       <meta charset="UTF-8">
-      <script src="jquery.js"></script>
-      <script src="search.js"></script>
+      <link href="style/search.css" rel="stylesheet" type="text/css">
+      <script src="js/jquery.js"></script>
+      <script src="js/search.js"></script>
       <script>
          $(document).ready(function () {
             RIAARadar.init();
@@ -12,8 +13,16 @@
       </script>
    </head>
    <body>
-      <input id="searchfield" type="text" size="40" placeholder="Enter an artist">
-      <input id="searchbutton" type="button" value="Search">
-      <ol id="results"></ol>
+      <header>
+         <div id="logo"></div>
+         <nav></nav>
+      </header>
+      <div id="wrapper">
+         <div id="search-box">
+            <input id="search-field" type="text" size="100" placeholder="Enter an artist (e.g. Nine Inch Nails)">
+         </div>
+         <ol id="results"></ol>
+         <input id="search-button" type="button" value="Search" style="float:right">
+      </div>
    </body>
 </html>
