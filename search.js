@@ -45,7 +45,7 @@ var RIAARadar = (function () {
         }
         /**
          * @methodOf RIAARadar-MBz-Artist
-         * @param {function} callback Function to be executed for each Release
+         * @param {function} callback Function to be executed on the Releases
          */
         Artist.prototype.getReleases = function (callback) {
             var mbzQuery = baseAPI + 'release-group?artist=' + this.mbid;
@@ -62,6 +62,26 @@ var RIAARadar = (function () {
                 },
                 failure: function () {
                     alert('Unable to connect to the MusicBrainz servers');
+                }
+            });
+        };
+        /**
+         * @methodOf RIAARadar-MBz-Artist
+         * @param {function} callback Function to be executed on the image
+         */
+        Artist.prototype.getImage = function (callback) {
+            $.ajax({
+                url: 'http://ws.audioscrobbler.com/2.0/'
+                    + '?method=artist.getimages'
+                    + '&mbid=' + this.mbid
+                    + '&api_key=92ae3bd20202652a8631cf7527555bf2'
+                    + '&format=json'
+                    + '&limit=1',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.images.image) {
+                        callback(data.images.image.sizes.size[2]['#text']);       
+                    }
                 }
             });
         };
@@ -96,7 +116,7 @@ var RIAARadar = (function () {
          */
         function artistSearch(name, callback) {
             var mbzQuery = baseAPI + 'artist?query=' +
-                encodeURIComponent(name);
+                encodeURIComponent(name) + '&limit=5';
 
             $.ajax({
                 url: mbzQuery,
@@ -138,16 +158,18 @@ var RIAARadar = (function () {
     function registerButton() {
         $('#searchbutton').click(function () {
             var query = $('#searchfield').val(),
-                results = $('#results'),
-                result;
+                results = $('#results');
             // Clear the previous results of the query
             results.empty();
             MBz.artistSearch(query, function (artist) {
-                result = $('<li>' + artist.name + '</li>');
+                var result = $('<li>' + artist.name + '</li>');
                 result.click(function () {
                     showReleases(artist);
                 });
                 results.append(result);
+                artist.getImage(function (image) {
+                    result.append('<img src="' + image + '">');
+                });
             });
         });
     }
