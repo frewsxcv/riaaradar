@@ -152,33 +152,43 @@ var RIAARadar = (function () {
         });
     }
 
-    /**
-     * Register search button action
-     */
-    function registerButton() {
-        $('#search-button').click(function () {
-            var query = $('#search-field').val(),
-                results = $('#results');
-            // Clear the previous results of the query
-            results.empty();
-            MBz.artistSearch(query, function (artist) {
-                var result = $('<li><div id="results-body">' + artist.name + 
-                    '<br>' + artist.disambig + '</div></li>');
-                result.click(function () {
-                    showReleases(artist);
-                });
-                results.append(result);
-                artist.getImage(function (image) {
-                    result.css('background-image', 'url("' + image + '")');
-                });
+    function showSearch() {
+        var query = $('#search-field').val(),
+            results = $('#results');
+        // Clear the previous results of the query
+        results.empty();
+        MBz.artistSearch(query, function (artist) {
+            var result = $('<li><div id="results-body">' + artist.name + 
+                '<br>' + artist.disambig + '</div></li>');
+            result.click(function () {
+                showReleases(artist);
             });
+            results.append(result);
+            artist.getImage(function (image) {
+                result.css('background-image', 'url("' + image + '")');
+            });
+        });
+    }
+
+    /**
+     * Register actions on the website
+     */
+    function registerActions() {
+        $('#search-button').click(function () {
+            showSearch();
+        });
+
+        $('#search-field').keypress(function (evt) {
+            if (evt.keyCode === 13) {
+                showSearch();
+            }
         });
     }
 
     return {
         init: function () {
             if ($.support.cors) {
-                registerButton();
+                registerActions();
             } else {
                 alert('Sorry, your browser doesn\'t support CORS');
             }
