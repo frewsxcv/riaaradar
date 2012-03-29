@@ -31,7 +31,15 @@ header {
    background-color: #d83636;
    height: 42px;
    padding: 6px 0;
-   border-bottom: solid white 5px;
+
+   background: #d83636; /* Old browsers */
+   background: -moz-linear-gradient(top, #d83636 0%, #8e2323 100%); /* FF3.6+ */
+   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d83636), color-stop(100%,#8e2323)); /* Chrome,Safari4+ */
+   background: -webkit-linear-gradient(top, #d83636 0%,#8e2323 100%); /* Chrome10+,Safari5.1+ */
+   background: -o-linear-gradient(top, #d83636 0%,#8e2323 100%); /* Opera 11.10+ */
+   background: -ms-linear-gradient(top, #d83636 0%,#8e2323 100%); /* IE10+ */
+   background: linear-gradient(top, #d83636 0%,#8e2323 100%); /* W3C */
+   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d83636', endColorstr='#8e2323',GradientType=0 ); /* IE6-9 */
 }
 
 
@@ -53,21 +61,43 @@ header {
 #search-box {
    margin-top: 50px; /* This needs to be more dynamic */
    border: 1px solid #ccc;
-   height: 25px;
-   padding: 5px 10px 10px;
+   height: 40px;
    border-radius: 5px;
    background-color: white;
+   padding-left: 10px;
 }
 
 #search-field {
+   margin-top: 5px;
    border: none;
    font-size: 22px;
-   width: 100%
+   width: 440px; /* there must be a better way */
+}
+
+#search-button {
+   background: url("img/magnify.png") #eee no-repeat;
+   background-position: center;
+   border-left: #ccc 1px solid;
+   height: 100%;
+   width: 50px;
+   float: right;
+   width: 40px;
+}
+
+#search-button:active {
+   background-color: #ddd;
 }
 
 #results {
-   max-height: 200px;
+   max-height: 300px;
    overflow-y: auto;
+   margin-top: 25px;
+   border: 1px solid #ccc;
+   border-radius: 5px;
+}
+
+#results:empty {
+   border: none;
 }
 
 #results li {
