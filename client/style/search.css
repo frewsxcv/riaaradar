@@ -1,3 +1,5 @@
+/* General */
+
 @font-face {
    font-family: 'PT Sans';
    src: url('fonts/pts55f_w.eot');
@@ -58,6 +60,8 @@ header {
    margin: 0 auto;
 }
 
+/* Search */
+
 #search-box {
    margin-top: 50px; /* This needs to be more dynamic */
    border: 1px solid #ccc;
@@ -88,6 +92,8 @@ header {
    background-color: #ddd;
 }
 
+/* Results */
+
 #results {
    max-height: 300px;
    overflow-y: auto;
@@ -117,7 +123,7 @@ header {
    cursor: pointer;
 }
 
-#results-body {
+.results-body {
    margin: 5px 0 0 80px;
    float: left;
 }

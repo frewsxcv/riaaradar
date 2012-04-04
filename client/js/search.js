@@ -8,6 +8,7 @@
 var RIAARadar = (function () {
     'use strict';
 
+
     /**
      * @namespace Various MusicBrainz related methods
      */
@@ -108,6 +109,27 @@ var RIAARadar = (function () {
              */
             this.type = jObj.attr('type');
         }
+        /**
+         * @methodOf RIAARadar-MBz-Release
+         * @param {function} callback Function to be executed on the
+         *     album art URL
+         */
+        Release.prototype.getAlbumArt = function (callback) {
+        };
+        /**
+         * @methodOf RIAARadar-MBz-Release
+         * @param {function} callback Function to be executed on a status
+         *     object
+         */
+        Release.prototype.getRiaaStatus = function (callback) {
+            $.ajax({
+                url: '/server?mbid=' + this.mbid,
+                dataType: 'json',
+                success: function (status) {
+                    callback(status);
+                }
+            });
+        };
 
         /**
          * Queries the MusicBrainz database for artists
@@ -147,7 +169,15 @@ var RIAARadar = (function () {
         artist.getReleases(function (releases) {
             results.empty();
             $.each(releases, function () {
-                results.append($('<li>' + this.title + '</li>'));
+            	
+            	// START OF BAD CODE
+            	var title = this.title;
+                this.getRiaaStatus(function (status) {
+                	results.append($('<li><div class="results-body">' + title + 
+                    	'<br />' + status.name + '</div></li>'));
+                });
+                // END OF BAD CODE
+                
             });
         });
     }
@@ -158,7 +188,7 @@ var RIAARadar = (function () {
         // Clear the previous results of the query
         results.empty();
         MBz.artistSearch(query, function (artist) {
-            var result = $('<li><div id="results-body">' + artist.name + 
+            var result = $('<li><div class="results-body">' + artist.name + 
                 '<br>' + artist.disambig + '</div></li>');
             result.click(function () {
                 showReleases(artist);
