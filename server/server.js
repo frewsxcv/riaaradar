@@ -3,7 +3,7 @@ var url = require("url");
 var PgClient = require("pg").Client; 
 var readFile = require("fs").readFile;
 var format = require("util").format;
-var riaaLabels = require("./riaalabels.js").riaaLabels;
+var riaaLabels = require("./riaa.js").labels;
 
 // Connect to PostgreSQL
 var pgClient = new PgClient({

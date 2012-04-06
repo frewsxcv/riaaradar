@@ -1,3 +1,8 @@
+/* Key: MBID of the label
+ * Name: Name of the label
+ * Source: Source proving the label's affiliation with the RIAA
+ */
+
 exports.riaaLabels = {
     '43defeac-9c81-4efa-b1db-a99e6fe40c9b': {
         name: 'Alternative Distribution Alliance',
