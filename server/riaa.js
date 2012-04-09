@@ -3,7 +3,7 @@
  * Source: Source proving the label's affiliation with the RIAA
  */
 
-exports.riaaLabels = {
+exports.labels = {
     '43defeac-9c81-4efa-b1db-a99e6fe40c9b': {
         name: 'Alternative Distribution Alliance',
         source: 'http://www.riaa.com/aboutus.php?content_selector=aboutus_members&f=a'
