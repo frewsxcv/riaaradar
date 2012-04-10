@@ -26,15 +26,17 @@ var Release = function (jObj) {
      */
     this.year = parseInt(jObj.children('first-release-date').text(), 10);
 };
+
 /**
- * @methodOf RIAARadar-MBz-Release
+ * @methodOf RIAARadar-Release
  * @param {function} callback Function to be executed on the
  *     album art URL
  */
 Release.prototype.getAlbumArt = function (callback) {
 };
+
 /**
- * @methodOf RIAARadar-MBz-Release
+ * @methodOf RIAARadar-Release
  * @param {function} callback Function to be executed on a status
  *     object
  */
@@ -45,5 +47,14 @@ Release.prototype.getRiaaStatus = function (callback) {
         success: function (status) {
             callback(status);
         }
+    });
+};
+
+Release.prototype.generateResult = function (callback) {
+    var title = this.title;
+    var year = this.year;
+    this.getRiaaStatus(function (status) {
+        callback($('<li><div class="results-body">' + title + 
+            '<br />' + status.name + ' - ' + year + '</div></li>'));
     });
 };

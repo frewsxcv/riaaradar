@@ -66,3 +66,8 @@ Artist.prototype.getImage = function (callback) {
         }
     });
 };
+
+Artist.prototype.generateResult = function (callback) {
+    callback($('<li><div class="results-body">' + this.name + 
+        '<br>' + this.disambig + '</div></li>'));
+};

@@ -37,18 +37,9 @@ function showReleases(artist) {
         });
 
         $.each(releases, function () {
-            console.log(this.year);
-
-            // START OF BAD CODE
-            var title = this.title;
-            var year = this.year;
-
-            this.getRiaaStatus(function (status) {
-                results.append($('<li><div class="results-body">' + title + 
-                    '<br />' + status.name + ' - ' + year + '</div></li>'));
+            this.generateResult(function (result) {
+                results.append(result);
             });
-            // END OF BAD CODE
-            
         });
     });
 }
@@ -59,14 +50,14 @@ function showSearch() {
     // Clear the previous results of the query
     results.empty();
     artistSearch(query, function (artist) {
-        var result = $('<li><div class="results-body">' + artist.name + 
-            '<br>' + artist.disambig + '</div></li>');
-        result.click(function () {
-            showReleases(artist);
-        });
-        results.append(result);
-        artist.getImage(function (image) {
-            result.css('background-image', 'url("' + image + '")');
+        artist.generateResult(function (result) {
+            result.click(function () {
+                showReleases(artist);
+            });
+            results.append(result);
+            artist.getImage(function (image) {
+                result.css('background-image', 'url("' + image + '")');
+            });
         });
     });
 }
@@ -75,11 +66,10 @@ function showSearch() {
  * Register actions on the website
  */
 function registerActions() {
-    $('#search-button').click(function () {
-        showSearch();
-    });
-
-    $('#search-field').keypress(function (evt) {
+    var searchButton = document.getElementById('search-button'),
+        searchField = document.getElementById('search-field');
+    searchButton.addEventListener('click', showSearch);
+    searchField.addEventListener('keyup', function (evt) {
         if (evt.keyCode === 13) {
             showSearch();
         }
