@@ -1,4 +1,4 @@
-define(["jquery", "Artist"], function ($, Artist) {
+define(["jquery", "artist"], function ($, Artist) {
     /**
      * Queries the MusicBrainz database for artists
      * @param {string} name Name of the artist to search for

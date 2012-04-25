@@ -1,4 +1,4 @@
-define(["Release", "lastfm", "jquery"], function(Release, lastfm, $) {
+define(["release", "lastfm", "jquery"], function(Release, lastfm, $) {
     /**
      * @constructor
      * @param {jQuery object} jObj MusicBrainz artist from API
