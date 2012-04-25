@@ -3,7 +3,7 @@ require(["musicbrainz", "jquery"], function(MBz, $) {
      * Shows the releases of the given artist
      * @param {Artist} artist The artist whose releases will be shown
      */
-    function showReleases(artist) {
+    var showReleases = function (artist) {
         var results = $('#results'),
             result;
         artist.getReleases(function (releases) {
@@ -11,16 +11,15 @@ require(["musicbrainz", "jquery"], function(MBz, $) {
             releases.sort(function (a, b) {
                 return a.year < b.year ? -1 : 1;
             });
-
-            $.each(releases, function () {
-                this.generateResult(function (result) {
+            releases.forEach(function (release) {
+                release.generateResult(function (result) {
                     results.append(result);
                 });
             });
         });
-    }
+    };
 
-    function showSearch() {
+    var showSearch = function () {
         var query = $('#search-field').val(),
             results = $('#results');
         // Clear the previous results of the query
@@ -36,23 +35,19 @@ require(["musicbrainz", "jquery"], function(MBz, $) {
                 });
             });
         });
-    }
+    };
 
     /**
      * Register actions on the website
-     * TODO: Reimplement in jQuery
      */
-    function registerActions() {
+    var registerActions = function () {
         $("#search-button").click(showSearch);
-        var searchButton = document.getElementById('search-button'),
-            searchField = document.getElementById('search-field');
-        searchButton.addEventListener('click', showSearch);
-        searchField.addEventListener('keyup', function (evt) {
+        $("#search-field").keyup(function (evt) {
             if (evt.keyCode === 13) {
                 showSearch();
             }
         });
-    }
+    };
 
     // Transition this out after complete transition to rwell
     if ($.support.cors) {
