@@ -9,8 +9,6 @@ define(["jquery", "artist"], function ($, Artist) {
             mbzQuery = baseAPI + 'artist?query=' +
             encodeURIComponent(name) + '&limit=10';
 
-        console.log($);
-
         $.ajax({
             url: mbzQuery,
             dataType: 'xml',
