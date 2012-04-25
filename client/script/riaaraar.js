@@ -64,6 +64,7 @@ function showSearch() {
 
 /**
  * Register actions on the website
+ * TODO: Reimplement in jQuery
  */
 function registerActions() {
     var searchButton = document.getElementById('search-button'),
