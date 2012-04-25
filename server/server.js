@@ -4,52 +4,48 @@ var PgClient = require("pg").Client;
 var readFile = require("fs").readFile;
 var format = require("util").format;
 var riaaLabels = require("./riaa.js").labels;
+var config = require("./config.js");
 
 // Connect to PostgreSQL
-var pgClient = new PgClient({
-    user: "musicbrainz",
-    password: "musicbrainz",
-    database: "musicbrainz_db",
-    host: "localhost",
-    port: 5432
-});
-
-pgClient.connect(function (err) {
-    if (err) {
-        throw err;
-    } else {
-        getQuery();
-    }
-});
+var pgClient = new PgClient(config.pgSettings);
 
 // Get the SQL query
-function getQuery() {
-    readFile("query.sql", "ascii", function(err, raw_query) {
+var getRawQuery = function (callback) {
+    readFile("query.sql", "ascii", function(err, rawQuery) {
         if (err) {
             throw err;
         } else {
-            startServer(raw_query);
+            callback(rawQuery);
         }
     });
-}
+};
 
-function startServer(raw_query) {
+var startServer = function (rawQuery) {
+    var getLabels = function (mbid, callback) {
+        var query = format(rawQuery, mbid);
+        var pgQuery = pgClient.query(query, function (err, result) {
+            var labels = [];
+            if (!err && result) {
+                result.rows.forEach(function(row) {
+                    labels.push(row);
+                });
+            }
+            callback(labels);
+        });
+    };
+
     http.createServer(function (req, res) {
         var mbid = url.parse(req.url, true).query.mbid;
         res.writeHead(200, {'Content-Type': 'application/json'});
         if (mbid) {
             getLabels(mbid, function (labels) {
                 result = { mbid: null };
-                console.log(labels);
                 labels.forEach(function (label) {
-                    console.log('\n' + label.gid + ' -- ' + label.name);
                     if (label.gid in riaaLabels) {
-                        console.log('riaa label: ' + riaaLabels[label.gid].name);
                         result.mbid = label.gid;
                         result.name = label.name;
                     }
                 });
-                console.log('-----------------------');
                 res.end(JSON.stringify(result), "ascii");
             });
         } else {
@@ -57,21 +53,16 @@ function startServer(raw_query) {
                 error: "mbid not specified"
             }), "ascii");
         }
-    }).listen(4567);
+    }).listen(config.httpPort);
 
-    function getLabels(mbid, callback) {
-        var query = format(raw_query, mbid);
-        var pgQuery = pgClient.query(query, function (err, result) {
-            var labels = [], index;
-            if (!err && result) {
-                result.rows.forEach(function(row) {
-                    labels.push({
-                    	gid: row.gid,
-                    	name: row.name
-                    });
-                });
-            }
-            callback(labels);
-        });
-    };
 };
+
+pgClient.connect(function (err) {
+    if (err) {
+        throw err;
+    } else {
+        getRawQuery(function (rawQuery) {
+            startServer(rawQuery);
+        });
+    }
+});
