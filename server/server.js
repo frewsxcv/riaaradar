@@ -41,14 +41,14 @@ function startServer(raw_query) {
             getLabels(mbid, function (labels) {
                 result = { mbid: null };
                 console.log(labels);
-                for (var index in labels) {
-                    console.log('\n' + labels[index].gid + ' -- ' + labels[index].name);
-                    if (labels[index].gid in riaaLabels) {
-                        console.log('riaa label: ' + riaaLabels[labels[index].gid].name);
-                        result.mbid = labels[index].gid;
-                        result.name = labels[index].name;
+                labels.forEach(function (label) {
+                    console.log('\n' + label.gid + ' -- ' + label.name);
+                    if (label.gid in riaaLabels) {
+                        console.log('riaa label: ' + riaaLabels[label.gid].name);
+                        result.mbid = label.gid;
+                        result.name = label.name;
                     }
-                }
+                });
                 console.log('-----------------------');
                 res.end(JSON.stringify(result), "ascii");
             });
@@ -64,15 +64,14 @@ function startServer(raw_query) {
         var pgQuery = pgClient.query(query, function (err, result) {
             var labels = [], index;
             if (!err && result) {
-                for (var index in result.rows) {
+                result.rows.forEach(function(row) {
                     labels.push({
-                    	gid: result.rows[index].gid,
-                    	name: result.rows[index].name
+                    	gid: row.gid,
+                    	name: row.name
                     });
-                }
+                });
             }
             callback(labels);
         });
     };
 };
-
