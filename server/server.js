@@ -23,7 +23,7 @@ var getRawQuery = function (callback) {
 var startServer = function (rawQuery) {
     var getLabels = function (mbid, callback) {
         var query = format(rawQuery, mbid);
-        var pgQuery = pgClient.query(query, function (err, result) {
+        pgClient.query(query, function (err, result) {
             var labels = [];
             if (!err && result) {
                 result.rows.forEach(function(row) {
