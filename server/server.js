@@ -39,7 +39,7 @@ var startServer = function (rawQuery) {
         res.writeHead(200, {'Content-Type': 'application/json'});
         if (mbid) {
             getLabels(mbid, function (labels) {
-                result = { mbid: null };
+                var result = { mbid: null };
                 labels.forEach(function (label) {
                     if (label.gid in riaaLabels) {
                         result.mbid = label.gid;
