@@ -14,7 +14,7 @@ var getLabels = function (mbid, callback) {
     pgClient.query(query, function (err, result) {
         var labels = [];
         if (!err && result) {
-            result.rows.forEach(function(row) {
+            result.rows.forEach(function (row) {
                 labels.push(row);
             });
         }
@@ -34,7 +34,7 @@ var startServer = function () {
                         "mbid": label.gid,
                         "name": label.name,
                         "prevRel": label.prev_rel,
-                        "riaa": label.gid in riaaLabels 
+                        "riaa": riaaLabels.hasOwnProperty(label.gid)
                     };
                     if (result.prevRel !== "source label") {
                         result.prevMbid = label.prev_gid;
