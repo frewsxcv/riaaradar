@@ -35,12 +35,10 @@ WITH RECURSIVE get_labels(prev_rel, prev_label, label) AS
           link_type.name = 'label rename'
           AND l_label_label.entity0 = get_labels.label))
 
-SELECT DISTINCT label.gid, label_name.name, get_labels.prev_rel,
+SELECT DISTINCT label.gid AS gid, label_name.name AS name, get_labels.prev_rel AS prev_rel,
   CASE
-    WHEN get_labels.prev_label = 0
-      THEN '00000000-0000-0000-0000-000000000000'
-    ELSE
-      prev_label.gid
+    WHEN get_labels.prev_label != 0
+      THEN prev_label.gid
     END AS prev_gid
   FROM get_labels, label, label AS prev_label, label_name
   WHERE get_labels.label = label.id
