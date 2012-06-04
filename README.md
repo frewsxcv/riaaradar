@@ -1,4 +1,5 @@
 RIAA Radar
 ==========
 
-Install instructions will be here soon
+ 1. [Set up MusicBrainz database](https://github.com/metabrainz/musicbrainz-server/blob/master/INSTALL.md)
+ 2. More steps to come...
