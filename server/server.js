@@ -63,6 +63,7 @@ pgClient.connect(function (err) {
     } else {
         getRawQuery(function (rawQuery) {
             startServer(rawQuery);
+            console.log("Server has started\n");
         });
     }
 });
