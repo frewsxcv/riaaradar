@@ -1,5 +1,5 @@
-WITH RECURSIVE get_labels(label) AS
-  (SELECT DISTINCT label.id
+WITH RECURSIVE get_labels(prev_rel, prev_label, label) AS
+  (SELECT DISTINCT 'source label', 0, label.id
     FROM label,
          label_name,
          release, 
@@ -11,7 +11,13 @@ WITH RECURSIVE get_labels(label) AS
       AND release.release_group = release_group.id
       AND release_group.gid = '%s'
   UNION
-  SELECT
+  SELECT link_type.name,
+    CASE 
+      WHEN link_type.name = 'label rename'
+        THEN l_label_label.entity0
+      ELSE
+        l_label_label.entity1
+    END,
     CASE 
       WHEN link_type.name = 'label rename'
         THEN l_label_label.entity1
@@ -29,7 +35,15 @@ WITH RECURSIVE get_labels(label) AS
           link_type.name = 'label rename'
           AND l_label_label.entity0 = get_labels.label))
 
-SELECT DISTINCT label.gid, label_name.name
-  FROM get_labels, label, label_name
+SELECT DISTINCT label.gid, label_name.name, get_labels.prev_rel,
+  CASE
+    WHEN get_labels.prev_label = 0
+      THEN '00000000-0000-0000-0000-000000000000'
+    ELSE
+      prev_label.gid
+    END AS prev_gid
+  FROM get_labels, label, label AS prev_label, label_name
   WHERE get_labels.label = label.id
-    AND label_name.id = label.name;
+    AND label_name.id = label.name
+    AND (get_labels.prev_label = prev_label.id
+        OR get_labels.prev_label = 0)
