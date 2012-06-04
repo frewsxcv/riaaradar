@@ -29,11 +29,11 @@ exports.labels = {
         source: 'http://www.riaa.com/aboutus.php?content_selector=aboutus_members&f=s'
     },
     '4d204722-f022-4b6e-8b76-0e06a45ffcdc': {
-    	name: 'Hydra Head Records',
-    	source: 'http://www.riaa.com/aboutus.php?content_selector=aboutus_members&f=h'
+        name: 'Hydra Head Records',
+        source: 'http://www.riaa.com/aboutus.php?content_selector=aboutus_members&f=h'
     },
     '8f638ddb-131a-4cc3-b3d4-7ebdac201b55': {
-    	name: 'Epic Records',
-    	source: 'http://www.riaa.com/aboutus.php?content_selector=aboutus_members&f=e'
+        name: 'Epic Records',
+        source: 'http://www.riaa.com/aboutus.php?content_selector=aboutus_members&f=e'
     }
 };
