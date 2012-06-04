@@ -4,8 +4,7 @@ require(["musicbrainz", "jquery"], function(MBz, $) {
      * @param {Artist} artist The artist whose releases will be shown
      */
     var showReleases = function (artist) {
-        var results = $('#results'),
-            result;
+        var results = $('#results');
         artist.getReleases(function (releases) {
             results.empty();
             releases.sort(function (a, b) {

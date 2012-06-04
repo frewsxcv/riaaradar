@@ -23,7 +23,7 @@ var getRawQuery = function (callback) {
 var startServer = function (rawQuery) {
     var getLabels = function (mbid, callback) {
         var query = format(rawQuery, mbid);
-        var pgQuery = pgClient.query(query, function (err, result) {
+        pgClient.query(query, function (err, result) {
             var labels = [];
             if (!err && result) {
                 result.rows.forEach(function(row) {
@@ -39,7 +39,7 @@ var startServer = function (rawQuery) {
         res.writeHead(200, {'Content-Type': 'application/json'});
         if (mbid) {
             getLabels(mbid, function (labels) {
-                result = { mbid: null };
+                var result = { mbid: null };
                 labels.forEach(function (label) {
                     if (label.gid in riaaLabels) {
                         result.mbid = label.gid;
