@@ -17,13 +17,9 @@ pgClient.connect(function (err) {
     }
 });
 
-// Generate a SQL query that finds the parents of the release group MBID
-exports.genQuery = function (mbid) {
-    return format(cachedRawQuery, mbid);
-};
-
 // Query the database
-exports.query = function (query, callback) {
+exports.query = function (mbid, callback) {
+    var query = format(cachedRawQuery, mbid);
     pgClient.query(query, function (err, result) {
         var labels = [];
         if (!err && result) {
@@ -36,7 +32,7 @@ exports.query = function (query, callback) {
 };
 
 // Upon loading of this file, cache the query
-readFile("query.sql", "ascii", function(err, rawQuery) {
+readFile("query.sql", "ascii", function (err, rawQuery) {
     if (err) {
         throw err;
     } else {

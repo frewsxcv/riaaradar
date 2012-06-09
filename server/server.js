@@ -5,17 +5,12 @@ var riaaLabels = require("./riaa.js").labels;
 var config = require("./config.js");
 var db = require("./db.js");
 
-var getLabels = function (mbid, callback) {
-    var query = db.genQuery(mbid);
-    // put query.query() here
-};
-
 var startServer = function () {
     http.createServer(function (req, res) {
         var mbid = urlParse(req.url, true).query.mbid;
         res.writeHead(200, {'Content-Type': 'application/json'});
         if (mbid) {
-            getLabels(mbid, function (labels) {
+            db.query(mbid, function (labels) {
                 var results = [];
                 labels.forEach(function (label) {
                     var result = {
