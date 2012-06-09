@@ -1,25 +1,13 @@
 var http = require("http");
 var urlParse = require("url").parse;
-var PgClient = require("pg").Client; 
 var format = require("util").format;
 var riaaLabels = require("./riaa.js").labels;
 var config = require("./config.js");
-var genQuery = require("./query.js").genQuery;
-
-// Connect to PostgreSQL
-var pgClient = new PgClient(config.pgSettings);
+var db = require("./db.js");
 
 var getLabels = function (mbid, callback) {
-    var query = genQuery(mbid);
-    pgClient.query(query, function (err, result) {
-        var labels = [];
-        if (!err && result) {
-            result.rows.forEach(function (row) {
-                labels.push(row);
-            });
-        }
-        callback(labels);
-    });
+    var query = db.genQuery(mbid);
+    // put query.query() here
 };
 
 var startServer = function () {
@@ -50,14 +38,8 @@ var startServer = function () {
             }), "ascii");
         }
     }).listen(config.httpPort, function () {
-        console.log("HTTP server listening on port " + config.httpPort + "\n");
+        console.log("HTTP server listening on port " + config.httpPort);
     });
 };
 
-pgClient.connect(function (err) {
-    if (err) {
-        throw err;
-    } else {
-        startServer();
-    }
-});
+startServer();
