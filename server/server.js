@@ -48,4 +48,7 @@ var startServer = function () {
     });
 };
 
-startServer();
+// Start server after database is ready
+db.init(function () {
+    startServer();
+});
