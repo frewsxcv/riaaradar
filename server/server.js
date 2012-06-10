@@ -5,13 +5,15 @@ var riaaLabels = require("./riaa.js").labels;
 var config = require("./config.js");
 var db = require("./db.js");
 
+// TODO: Think of a better function name
 var sendResInvalid = function (res) {
-    res.writeHead(200, {'Content-Type': 'application/json'});
+    res.writeHead(400, {'Content-Type': 'application/json'});
     res.end(JSON.stringify({
         error: "mbid not specified"
     }), "ascii");
 };
 
+// TODO: Think of a better function name
 var sendResValid = function (mbid, res) {
     res.writeHead(200, {'Content-Type': 'application/json'});
     db.query(mbid, function (labels) {
