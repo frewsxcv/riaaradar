@@ -5,32 +5,41 @@ var riaaLabels = require("./riaa.js").labels;
 var config = require("./config.js");
 var db = require("./db.js");
 
+var sendResInvalid = function (res) {
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    res.end(JSON.stringify({
+        error: "mbid not specified"
+    }), "ascii");
+};
+
+var sendResValid = function (mbid, res) {
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    db.query(mbid, function (labels) {
+        var results = [];
+        labels.forEach(function (label) {
+            var result = {
+                "mbid": label.gid,
+                "name": label.name,
+                "prevRel": label.prev_rel,
+                "riaa": riaaLabels.hasOwnProperty(label.gid)
+            };
+            if (result.prevRel !== "source label") {
+                result.prevMbid = label.prev_gid;
+            }
+            results.push(result);
+        });
+        console.log(JSON.stringify(results));
+        res.end(JSON.stringify(results), "ascii");
+    });
+};
+
 var startServer = function () {
     http.createServer(function (req, res) {
         var mbid = urlParse(req.url, true).query.mbid;
-        res.writeHead(200, {'Content-Type': 'application/json'});
         if (mbid) {
-            db.query(mbid, function (labels) {
-                var results = [];
-                labels.forEach(function (label) {
-                    var result = {
-                        "mbid": label.gid,
-                        "name": label.name,
-                        "prevRel": label.prev_rel,
-                        "riaa": riaaLabels.hasOwnProperty(label.gid)
-                    };
-                    if (result.prevRel !== "source label") {
-                        result.prevMbid = label.prev_gid;
-                    }
-                    results.push(result);
-                });
-                console.log(JSON.stringify(results));
-                res.end(JSON.stringify(results), "ascii");
-            });
+            sendResValid(mbid, res);
         } else {
-            res.end(JSON.stringify({
-                error: "mbid not specified"
-            }), "ascii");
+            sendResInvalid(res);
         }
     }).listen(config.httpPort, function () {
         console.log("HTTP server listening on port " + config.httpPort);
