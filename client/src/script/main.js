@@ -1,4 +1,4 @@
-require(["musicbrainz", "jquery"], function(MBz, $) {
+require(["musicbrainz", "jquery"], function (MBz, $) {
     /**
      * Shows the releases of the given artist
      * @param {Artist} artist The artist whose releases will be shown
