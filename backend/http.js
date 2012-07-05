@@ -3,7 +3,7 @@
 var http = require("http");
 var urlParse = require("url").parse;
 var format = require("util").format;
-var riaaLabels = require("./riaa.js").labels;
+var riaaLabels = require("./labels.js").labels;
 var config = require("./config.js");
 var db = require("./db.js");
 
