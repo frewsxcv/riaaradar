@@ -1,3 +1,5 @@
+// Database functions
+
 var readFile = require("fs").readFile;
 var format = require("util").format;
 var PgClient = require("pg").Client;
