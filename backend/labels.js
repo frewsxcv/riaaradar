@@ -1,7 +1,11 @@
-/* Key: MBID of the label
- * Name: Name of the label
- * Source: Source proving the label's affiliation with the RIAA
- */
+/* RIAA affiliated labels and their MusicBrainz ID 
+ * Here's how each entry should look:
+ * 
+ * '<musicbrainz id of label>': {
+ *     name: '<name of label>', 
+ *     source: '<url of site you found proving label is an RIAA member>'
+ * }
+*/
 
 exports.labels = {
     '43defeac-9c81-4efa-b1db-a99e6fe40c9b': {
