@@ -9,36 +9,36 @@
 
 exports.labels = {
     '893364ff-1830-4694-833d-93751f14f984': {
-        name: '!K7'
+        name: '!K7',
         source: 'http://www.riaa.com/aboutus.php?content_selector=aboutus_members&f=#'
     },
     /* 112 records not in musicbrainz */
     '15bc8c1a-6cf5-4e9f-8218-ecc0894b053a': {
-        name: '1500 Records'
+        name: '1500 Records',
         source: 'http://www.riaa.com/aboutus.php?content_selector=aboutus_members&f=#'
     },
     'dc435fb5-3c06-4e97-b1f6-f814f37703a3': {
-        name: '19 Recordings'
+        name: '19 Recordings',
         source: 'http://www.riaa.com/aboutus.php?content_selector=aboutus_members&f=#'
     },
     /* 2-4-1 records not in musicbrainz */
     /* 2012 sdtk not in musicbrainz */
     'bf2dbd91-7d1f-4eee-9798-15ef44fdf596': {
-        name: '21 Records'
+        name: '21 Records',
         source: 'http://www.riaa.com/aboutus.php?content_selector=aboutus_members&f=#'
     },
     /* 2PAC INT UNREL MAST not in musicbrainz */
     /* can't confirm 333 Music - I think they're not in musicbrainz */
     /* can't confirm 4 Life */
     'a539bb1e-f2e1-4b45-9db8-8053841e7503': {
-        name: '4AD'
+        name: '4AD',
         source: 'http://www.riaa.com/aboutus.php?content_selector=aboutus_members&f=#'
     },
     /* 4Troops Cat seems to be band-specific? may be under Sony Masterworks */
     /* 50 Cent Movie is almost certainly artist-specific, probably under something else */
     /* 500 YEARS LATER not in musicbrainz, but 300 years later is. RIAA typo? */
     '03fe64fe-8260-456a-a26e-fcb3ac79423f': {
-        name: '604 Records'
+        name: '604 Records',
         source: 'http://www.riaa.com/aboutus.php?content_selector=aboutus_members&f=#'
     },
     /* 7-10 Music not in musicbrainz */
