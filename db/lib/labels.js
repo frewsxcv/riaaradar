@@ -59,6 +59,10 @@
 
     // about 1/3 of page # done above */
 
+    // A&M Records
+    '35515729-1f2c-4cc9-9390-9af2764bc56c':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=a',
+
     // Alternative Distribution Alliance
     '43defeac-9c81-4efa-b1db-a99e6fe40c9b':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=a',
@@ -69,6 +73,10 @@
 
     // Beggars Banquet
     '5917da67-b605-4a08-a5a0-a6874501dda4':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=b',
+
+    // Buddha
+    '5cc3665b-6692-4469-9249-92d83a08b1ea':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=b',
 
     // Capitol Records
@@ -83,6 +91,10 @@
     'f18f3b31-8263-4de3-966a-fda317492d3d':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=d',
 
+    // Elektra
+    '873f9f75-af68-4872-98e2-431058e4c9a9':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=e',
+
     // EMI Classics
     'f3b662ac-d029-4c87-a9bd-2f2f65b21e4f':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=e',
@@ -90,6 +102,10 @@
     // Epic Records
     '8f638ddb-131a-4cc3-b3d4-7ebdac201b55':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=e',
+
+    // Fania
+    'a00f1d54-2e47-492b-b24b-3b994b2ba0c4':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=f',
 
     // Hydra Head Records
     '4d204722-f022-4b6e-8b76-0e06a45ffcdc':
@@ -111,9 +127,21 @@
     '46a3941a-c810-47a1-974f-955effec4d09':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=m',
 
+    // MGM
+    'b6bdeeb6-a2f9-4624-8912-131a85f7c7a7':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=m',
+
     // Mute
     'e0b106a5-4add-4839-9e40-c192457e1bf8':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=m',
+
+    // Nettwerk
+    '8aa0e885-1cbb-474d-9b74-ae8446989417':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=n',
+
+    // Nuclear Blast America
+    'ea3b46c1-f7cd-466c-9a26-23d55678b0f1':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=n',
 
     // Parlophone
     'df7d1c7f-ef95-425f-8eef-445b3d7bcbd9':
@@ -122,6 +150,10 @@
     // PIAS Recordings
     '05dac601-c683-4c02-afc4-4a03cd01c25f':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=p',
+
+    // Rhino
+    'c4f2cf49-b57c-4cc1-8061-f54400704ac4':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=r',
 
     // Secretly Canadian
     'dd6afc9a-6352-4c96-aeb6-9a73e2bf1519':
@@ -138,6 +170,10 @@
     // Universal Music Group
     '19d052fa-570a-4b17-9a3d-8f2f029b7b57':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=u',
+
+    // Virgin
+    '49b58bdb-3d74-40c6-956a-4c4b46115c9c':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=v',
 
     // Warner Bros. Records
     'c595c289-47ce-4fba-b999-b87503e8cb71':
