@@ -21,19 +21,18 @@ public class MusicBrainz {
      * @return Music labels
      */
     public ArrayList<Label> getLabels() {
+    	ArrayList<Label> labels = new ArrayList<Label>();
         Statement st;
         ResultSet rs;
-        ArrayList<Label> labels = new ArrayList<Label>();
         Connection conn = connect();
+        String query = "SELECT label.id, label.gid, label_name.name "
+                     + "  FROM label, label_name"
+                     + "  WHERE label.name = label_name.id";
         try {
             st = conn.createStatement();
-            rs = st.executeQuery(
-                      "SELECT label.id, label.gid, label_name.name "
-                    + "  FROM label, label_name"
-                    + "  WHERE label.name = label_name.id;");
+            rs = st.executeQuery(query);
             while (rs.next()) {
-                labels.add(new Label(rs.getString(1), rs.getString(2), rs
-                        .getString(3)));
+                labels.add(new Label(rs));
             }
             rs.close();
             st.close();
@@ -51,13 +50,13 @@ public class MusicBrainz {
     public ArrayList<LabelRelation> getLabelRelations() {
         ArrayList<LabelRelation> ret = new ArrayList<LabelRelation>();
         Connection conn = connect();
+        String query = "SELECT link_type.name, l_l_l.entity0, l_l_l.entity1"
+                     + "  FROM l_label_label AS l_l_l, link, link_type "
+                     + "  WHERE l_l_l.link = link.id "
+                     + "    AND link.link_type = link_type.id";
         try {
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(
-                      "SELECT link_type.name, l_l_l.entity0, l_l_l.entity1"
-                    + "  FROM l_label_label AS l_l_l, link, link_type "
-                    + "  WHERE l_l_l.link = link.id "
-                    + "    AND link.link_type = link_type.id");
+            ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
                 ret.add(new LabelRelation(rs));
             }
@@ -107,14 +106,13 @@ public class MusicBrainz {
 
         /**
          * Constructs a new Label with all properties
-         * @param id The database ID of the music label
-         * @param mbid The Musicbrainz ID of the music label
-         * @param name The name of the music label  
+         * @param rs
+         * @throws SQLException 
          */
-        public Label(String id, String mbid, String name) {
-            this.id = id;
-            this.mbid = mbid;
-            this.name = name;
+        public Label(ResultSet rs) throws SQLException {
+            this.id = rs.getString(1);
+            this.mbid = rs.getString(2);
+            this.name = rs.getString(3);
         }
 
         /**
