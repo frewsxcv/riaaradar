@@ -95,6 +95,10 @@
     '873f9f75-af68-4872-98e2-431058e4c9a9':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=e',
 
+    // EMI Christian Music Group
+    '6c3d7884-1d80-4a2b-8527-406c56197496':
+        'www.riaa.com/aboutus.php?content_selector=who_we_are_board',
+
     // EMI Classics
     'f3b662ac-d029-4c87-a9bd-2f2f65b21e4f':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=e',
@@ -159,6 +163,10 @@
     'dd6afc9a-6352-4c96-aeb6-9a73e2bf1519':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=s',
 
+    // Sony Music Entertainment
+    '9e6b4d7f-4958-4db7-8504-d89e315836af':
+        'http://riaa.com/aboutus.php?content_selector=who_we_are_board',
+
     // Sony Music Entertainment (Japan)
     '0331bcea-3905-4893-9874-1d3f10480625':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=s',
@@ -171,9 +179,17 @@
     '19d052fa-570a-4b17-9a3d-8f2f029b7b57':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=u',
 
+    // Varèse Sarabande
+    '44f4d815-bf54-4f56-b704-72a196c6bd58':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=v',
+
     // Virgin
     '49b58bdb-3d74-40c6-956a-4c4b46115c9c':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=v',
+
+    // Warner Music Group
+    '85010168-8987-4540-a058-296d426c3981':
+        'www.riaa.com/aboutus.php?content_selector=who_we_are_board',
 
     // Warner Bros. Records
     'c595c289-47ce-4fba-b999-b87503e8cb71':
