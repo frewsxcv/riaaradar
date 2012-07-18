@@ -1,11 +1,11 @@
 // HTTP server
 
+// Imports
 var http = require("http");
 var urlParse = require("url").parse;
-var format = require("util").format;
-var riaaLabels = require("./labels.js").labels;
-var config = require("./config.js");
-var db = require("./db.js");
+
+// HTTP server port
+var HTTP_PORT = 4567;
 
 // Respond to an invalid request
 var respondToInvalidReq = function (res) {
@@ -23,21 +23,7 @@ var respondToValidReq = function (mbid, res) {
         'Content-Type': 'application/json'
     });
     db.query(mbid, function (labels) {
-        var results = [];
-        labels.forEach(function (label) {
-            var result = {
-                "mbid": label.gid,
-                "name": label.name,
-                "prevRel": label.prev_rel,
-                "riaa": riaaLabels.hasOwnProperty(label.gid)
-            };
-            if (result.prevRel !== "source label") {
-                result.prevMbid = label.prev_gid;
-            }
-            results.push(result);
-        });
-        console.log(JSON.stringify(results));
-        res.end(JSON.stringify(results), "ascii");
+        // query database here
     });
 };
 
@@ -50,8 +36,8 @@ var startServer = function () {
         } else {
             respondToInvalidReq(res);
         }
-    }).listen(config.httpPort, function () {
-        console.log("HTTP server listening on port " + config.httpPort);
+    }).listen(HTTP_PORT, function () {
+        console.log("HTTP server listening on port " + HTTP_PORT);
     });
 };
 
