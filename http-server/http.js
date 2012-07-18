@@ -5,7 +5,7 @@ var http = require("http");
 var urlParse = require("url").parse;
 
 // HTTP server port
-var HTTP_PORT = 4567;
+var httpPort = 4567;
 
 // Respond to an invalid request
 var respondToInvalidReq = function (res) {
@@ -36,8 +36,8 @@ var startServer = function () {
         } else {
             respondToInvalidReq(res);
         }
-    }).listen(HTTP_PORT, function () {
-        console.log("HTTP server listening on port " + HTTP_PORT);
+    }).listen(httpPort, function () {
+        console.log("HTTP server listening on port " + httpPort);
     });
 };
 
