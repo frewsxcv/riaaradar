@@ -22,9 +22,7 @@ var respondToValidReq = function (mbid, res) {
     res.writeHead(200, {
         'Content-Type': 'application/json'
     });
-    db.query(mbid, function (labels) {
-        // query database here
-    });
+    // WRITE CODE HERE
 };
 
 // Start the HTTP server
