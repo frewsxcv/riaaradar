@@ -1,38 +1,35 @@
 package com.riaaradar;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.lang.reflect.Type;
 import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-/**
- * RIAA Radar specific methods
- */
-public class RiaaRadar {
+// Core RIAA Radar specific methods
+public final class RiaaRadar {
+    
+    // Location of the RIAA labels file
+    private String riaaLabelsFile = "lib/labels.js";
 
-    /**
-     * Return a mapping of RIAA affiliated labels
-     * @return Map from MBID -> Source showing RIAA status
-     */
+    // Returns a mapping of RIAA affiliated labels
+    // (MBID → URL of source showing RIAA status of label)
     public Map<String, String> getRiaaLabels() {
         Gson gson = new Gson();
-        TypeToken<Map<String, String>> tt = new TypeToken<Map<String, String>>() {};
-        FileReader labelsFile = openLabelsFile();
-        return gson.fromJson(labelsFile, tt.getType());
+        Type mapType = (new TypeToken<Map<String, String>>() {}).getType();
+        return gson.fromJson(openLabelsFile(), mapType);
     }
 
-    /**
-     * Return a file of RIAA affiliated labels
-     * @return FileReader of open labels file
-     */
+    // Returns a FileReader of RIAA affiliated labels
     private FileReader openLabelsFile() {
+        FileReader file = null;
         try {
-            return new FileReader(new File("lib/labels.js"));
+            file = new FileReader(riaaLabelsFile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return null;
+        return file;
     }
+    
 }

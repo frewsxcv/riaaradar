@@ -7,19 +7,16 @@ import java.util.Properties;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
-public class MusicBrainz {
+// MusicBrainz related functions
+public final class MusicBrainz {
 
-    /**
-     * 
-     */
+    // Constructs a new MusicBrainz object and loads the Jdbc driver for the
+    // PostgreSQL database
     public MusicBrainz() {
         loadJdbc();
     }
 
-    /**
-     * Gets all the music labels in the database
-     * @return Music labels
-     */
+    // Returns all the music labels in the database
     public ArrayList<Label> getLabels() {
     	ArrayList<Label> labels = new ArrayList<Label>();
         Statement st;
@@ -43,10 +40,7 @@ public class MusicBrainz {
         return labels;
     }
 
-    /**
-     * Returns the relations between labels in the Musicbrainz database
-     * @return ArrayList of LabelRelations in the Musicbrainz database
-     */
+    // Returns the relations between labels in the Musicbrainz database
     public ArrayList<LabelRelation> getLabelRelations() {
         ArrayList<LabelRelation> ret = new ArrayList<LabelRelation>();
         Connection conn = connect();
@@ -69,9 +63,7 @@ public class MusicBrainz {
         return ret;
     }
 
-    /**
-     * Load the JDBC driver
-     */
+    // Load the PostgreSQL JDBC driver
     private void loadJdbc() {
         try {
             Class.forName("org.postgresql.Driver");
@@ -80,9 +72,7 @@ public class MusicBrainz {
         }
     }
 
-    /**
-     * Connect to the database
-     */
+    // Initiate connection with the MusicBrainz PostgreSQL database
     private Connection connect() {
         String url = "jdbc:postgresql://localhost/musicbrainz_db";
         Connection conn = null;
@@ -98,28 +88,19 @@ public class MusicBrainz {
         return conn;
     }
 
-    /**
-     * Represents a music label from the MusicBrainz database
-     */
+    // Represents a music label from the MusicBrainz database
     public class Label {
         private String id, mbid, name;
 
-        /**
-         * Constructs a new Label with all properties
-         * @param rs
-         * @throws SQLException 
-         */
+        // Constructs a new Label with all properties. Input should be a
+        // ResultSet with the following order: id, mbid, name
         public Label(ResultSet rs) throws SQLException {
             this.id = rs.getString(1);
             this.mbid = rs.getString(2);
             this.name = rs.getString(3);
         }
 
-        /**
-         * Converts this Label to a new Neo4j Node
-         * @param graphDb The graph database used to create the Node
-         * @return The Node representation of this Label
-         */
+        // Converts this Label to a new Neo4j Node
         public Node toNode(GraphDatabaseService graphDb) {
             Node node = graphDb.createNode();
             node.setProperty("mbid", this.mbid);
@@ -127,65 +108,46 @@ public class MusicBrainz {
             return node;
         }
 
-        /**
-         * Returns the database ID of this music label
-         * @return Database ID of this Label
-         */
+        // Returns the database ID of this music label
         public String getId() {
             return this.id;
         }
 
-        /**
-         * Returns the Musicbrainz ID of this music label
-         * @return Musicbrainz ID of this Label
-         */
+        // Returns the MusicBrainz ID of this music label
         public String getMbid() {
             return this.mbid;
         }
 
-        /**
-         * Returns the name of this music label
-         * @return Name of this Label
-         */
+        // Returns the name of this music label
         public String getName() {
             return this.name;
         }
     }
 
+    // Represents a relationship between music labels
     public class LabelRelation {
         private String relType, labelId0, labelId1;
 
-        /**
-         * 
-         * @param rs
-         * @throws SQLException
-         */
+        // Constructs a new LabelRelation with all properties. Input should be a
+        // ResultSet with the following order: relation type, ID of label 0,
+        // ID of label1
         public LabelRelation(ResultSet rs) throws SQLException {
             this.relType = rs.getString(1);
             this.labelId0 = rs.getString(2);
             this.labelId1 = rs.getString(3);
         }
         
-        /**
-         * 
-         * @return
-         */
+        // Returns the type of the relationship
         public String getRelType() {
             return this.relType;
         }
         
-        /**
-         * 
-         * @return
-         */
+        // Returns the database ID of the first label
         public String getLabelId0() {
             return this.labelId0;
         }
         
-        /**
-         * 
-         * @return
-         */
+        // Returns the database ID of the second label
         public String getLabelId1() {
             return this.labelId1;
         }

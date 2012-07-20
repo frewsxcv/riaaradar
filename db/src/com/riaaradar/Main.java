@@ -1,9 +1,10 @@
 package com.riaaradar;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-
-import org.neo4j.graphdb.Path;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.riaaradar.MusicBrainz.Label;
 import com.riaaradar.MusicBrainz.LabelRelation;
 
@@ -22,7 +23,6 @@ public class Main {
         ArrayList<LabelRelation> relations = mbz.getLabelRelations();
         System.out.print("Done\n");
 
-        
         Neo4j neo4j = new Neo4j();
         System.out.println("Connected to Neo4j");
 
@@ -34,14 +34,23 @@ public class Main {
         neo4j.addRelations(relations);
         System.out.print("Done\n");
         
-        System.out.println(neo4j.traversal());
-
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        PrintWriter out = null;
+        try {
+            out = new PrintWriter("riaaPath.js");
+            out.println(gson.toJson(neo4j.getRiaaLabelTree()));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            out.close();
+        }
+        
         System.out.print("Disconnecting from Neo4j...");
         neo4j.disconnect();
         System.out.print("Done\n");
         
         System.out.print("Clearing existing data...");
-        neo4j.clear();
+        neo4j.removeDB();
         System.out.print("Done\n");
     }
 }

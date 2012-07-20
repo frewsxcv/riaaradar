@@ -9,6 +9,7 @@ import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Path;
+import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
@@ -16,53 +17,76 @@ import org.neo4j.graphdb.index.Index;
 import org.neo4j.graphdb.traversal.Evaluation;
 import org.neo4j.graphdb.traversal.Evaluator;
 import org.neo4j.graphdb.traversal.TraversalDescription;
-import org.neo4j.graphdb.traversal.Traverser;
 import org.neo4j.kernel.Traversal;
 import org.neo4j.tooling.GlobalGraphOperations;
-
 import com.riaaradar.MusicBrainz.Label;
 import com.riaaradar.MusicBrainz.LabelRelation;
 
-/**
- * Methods to read and manipulate a Neo4j database
- */
-public class Neo4j {
-    private GraphDatabaseService graphDb;
-    
-    private static String DB_LOCATION = "tmp/graph.db";
-    private static TraversalDescription TRAVEL_DESC = 
-            Traversal.description().breadthFirst()
-            .relationships(LabelRelTypes.BUSINESS_ASSOCIATION_WITH)
-            .relationships(LabelRelTypes.CATALOG_DISTRIBUTED_BY, Direction.OUTGOING)
-            .relationships(LabelRelTypes.CATALOG_REISSUED_BY, Direction.OUTGOING)
-            .relationships(LabelRelTypes.OWNED_BY, Direction.OUTGOING)
-            .relationships(LabelRelTypes.RENAMED_TO, Direction.OUTGOING)
-            .evaluator(new Evaluator() {
-                public Evaluation evaluate(Path path) {
-                    if (path.endNode().hasProperty("riaa-source")) {
-                        return Evaluation.INCLUDE_AND_PRUNE;
-                    }
-                    return Evaluation.EXCLUDE_AND_CONTINUE;
-                }
-            });
+// Methods to read and manipulate a Neo4j database
+public final class Neo4j {
 
+    // The different types of relationships labels share with other labels
     private enum LabelRelTypes implements RelationshipType {
-        OWNED_BY, CATALOG_REISSUED_BY, RENAMED_TO, CATALOG_DISTRIBUTED_BY,
-        BUSINESS_ASSOCIATION_WITH, UNKNOWN_RELATION
+        OWN("owned by"),
+        CRE("catalog reissued by"),
+        RNM("renamed to"),
+        CDI("catalog distributed by"),
+        BUS("BUSINESS_ASSOCIATION_WITH"),
+        UKN("UNKNOWN_RELATION");
+        
+        // Description of label relation 
+        private String desc;
+        
+        // Constructs a LabelRelType with a description
+        private LabelRelTypes(String desc) {
+            this.desc = desc;
+        }
+        
+        // Returns the description of the label to label relationship
+        public String toString() {
+            return this.desc;
+        }
     }
     
+    // Neo4j database service
+    private GraphDatabaseService graphDb;
+    
+    // Location of temporary database
+    private static String DB_LOCATION = "tmp/graph.db";
+
+    // Describes how the graph should be traversed
+    private static TraversalDescription TRAV_DESC = Traversal.description()
+        .breadthFirst()
+        .relationships(LabelRelTypes.BUS)
+        .relationships(LabelRelTypes.CDI, Direction.OUTGOING)
+        .relationships(LabelRelTypes.CRE, Direction.OUTGOING)
+        .relationships(LabelRelTypes.OWN, Direction.OUTGOING)
+        .relationships(LabelRelTypes.RNM, Direction.OUTGOING)
+        .evaluator(new Evaluator() {
+            public Evaluation evaluate(Path path) {
+                if (path.endNode().hasProperty("riaa-source"))
+                    return Evaluation.INCLUDE_AND_PRUNE;
+                return Evaluation.EXCLUDE_AND_CONTINUE;
+            }
+        });
+    
+    // Constructs a new Neo4j object
     public Neo4j() {
-        this.clear();
+        this.removeDB();
+        this.initDB();
+    }
+    
+    // Initialize a new Neo4j database
+    private void initDB() {
         graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(DB_LOCATION);
     }
 
-    /**
-     * Clear all relationships and nodes from the Neo4j database
-     */
-    public void clear() {
+    // Clear all relationships and nodes from the Neo4j database
+    public void removeDB() {
         deleteFileOrDirectory(new File(DB_LOCATION));
     }
     
+    // Deletes the file/directory
     private void deleteFileOrDirectory(final File file) {
         if (file.exists()) {
             if (file.isDirectory()) {
@@ -74,10 +98,7 @@ public class Neo4j {
         }
     }
 
-    /**
-     * Add all the given Labels into the Neo4j database
-     * @param labels Music labels to be inserted into the Neo4j database
-     */
+    // Add all the given Labels into the Neo4j database
     public void addLabels(List<Label> labels) {
         Transaction tx = graphDb.beginTx();
         Index<Node> nodeIndex = graphDb.index().forNodes("labels");
@@ -99,6 +120,8 @@ public class Neo4j {
         }
     }
 
+    // Adds relationships to all the label nodes in the graph database given a
+    // list of LabelRelations
     public void addRelations(List<LabelRelation> relations) {
         Transaction tx = graphDb.beginTx();
         Index<Node> nodeIndex = graphDb.index().forNodes("labels");
@@ -117,47 +140,84 @@ public class Neo4j {
         }
     }
 
-    private void createLabelRelation(String type, Node labelNode0, Node labelNode1) {
-        if (type.equals("label ownership")) {
-            labelNode1.createRelationshipTo(labelNode0, LabelRelTypes.OWNED_BY);
-        } else if (type.equals("label reissue")) {
-            labelNode1.createRelationshipTo(labelNode0,
-                    LabelRelTypes.CATALOG_REISSUED_BY);
-        } else if (type.equals("label rename")) {
-            labelNode0.createRelationshipTo(labelNode1,
-                    LabelRelTypes.RENAMED_TO);
-        } else if (type.equals("label distribution")) {
-            labelNode1.createRelationshipTo(labelNode0,
-                    LabelRelTypes.CATALOG_DISTRIBUTED_BY);
-        } else if (type.equals("business association")) {
-            labelNode1.createRelationshipTo(labelNode0,
-                    LabelRelTypes.BUSINESS_ASSOCIATION_WITH);
-        } else {
-            labelNode1.createRelationshipTo(labelNode0,
-                    LabelRelTypes.UNKNOWN_RELATION);
+    // Creates a single relationship of the given type  between two labels nodes 
+    private void createLabelRelation(String type, Node node0, Node node1) {
+        switch (type) {
+        case "label ownership":
+            node1.createRelationshipTo(node0, LabelRelTypes.OWN);
+            break;
+        case "label reissue":
+            node1.createRelationshipTo(node0, LabelRelTypes.CRE);
+            break;
+        case "label rename":
+            node0.createRelationshipTo(node1, LabelRelTypes.RNM);
+            break;
+        case "label distribution":
+            node1.createRelationshipTo(node0, LabelRelTypes.CDI);
+            break;
+        case "business association":
+            node1.createRelationshipTo(node0, LabelRelTypes.BUS);
+            break;
+        default:
+            node1.createRelationshipTo(node0, LabelRelTypes.UKN);
         }
     }
 
-    public Map<String, String> traversal() {
-        Map<String, String> ret = new HashMap<String, String>();
-        String riaaPath = "";
+    // Returns the Map representation of a tree connecting RIAA labels
+    public Map<String, RiaaLabelTreeNode> getRiaaLabelTree() {
+        Map<String, RiaaLabelTreeNode> ret = new HashMap<String, RiaaLabelTreeNode>();
         for (Node node : GlobalGraphOperations.at(graphDb).getAllNodes()) {
-            Iterator<Path> pathIter = TRAVEL_DESC.traverse(node).iterator();
+            Iterator<Path> pathIter = TRAV_DESC.traverse(node).iterator();
             if (pathIter.hasNext()) {
+                // Only get the first path (sometimes the query returns multiple paths)
                 Path firstPath = pathIter.next();
-                riaaPath = "";
-                for (Node tmpnode : firstPath.nodes()) {
-                    riaaPath += tmpnode.getProperty("mbid");
-                }
-                ret.put(node.getProperty("mbid").toString(), riaaPath);
+                putTreeNodes(ret, firstPath);
             }
         }
         return ret;
+    }
+    
+    private void putTreeNodes(Map<String, RiaaLabelTreeNode> ret, Path firstPath) {
+        Node childNode = null, parentNode = null;
+        Iterator<Node> nodeIter = firstPath.nodes().iterator();
+        Relationship rel;
+        if (nodeIter.hasNext()) {
+            childNode = nodeIter.next();
+            if (nodeIter.hasNext()) {
+                parentNode = nodeIter.next();
+                rel = this.getRelationship(parentNode, childNode);
+                ret.put(childNode.getProperty("mbid").toString(),
+                        new RiaaLabelTreeNode(parentNode.getProperty("mbid").toString(), rel.getType().toString()));
+            } else {
+                ret.put(childNode.getProperty("mbid").toString(), null);
+            }
+        }
+    }
+    
+    // TODO: This should find the most prominent relationship, but for now just
+    //        picks the first one
+    private Relationship getRelationship(Node parent, Node child) {
+        // TODO: Can business associations be bi-directional?
+        Iterable<Relationship> relationships = child.getRelationships(Direction.OUTGOING);
+        for (Relationship relationship : relationships) {
+            if (relationship.getEndNode().equals(parent)) {
+                return relationship;
+            }
+        }
+        return null;
+    }
+    
+    private class RiaaLabelTreeNode {
+        private String parent, labelRel;
         
+        public RiaaLabelTreeNode(String parent, String labelRel) {
+            this.parent = parent;
+            this.labelRel = labelRel;
+        }
     }
 
     /**
-     * Disconnect from the Neo4j database
+     * Disconnect from the Neo4j databasearg0
      */
     public void disconnect() {
         graphDb.shutdown();
