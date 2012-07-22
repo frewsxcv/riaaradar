@@ -125,14 +125,12 @@ public final class Neo4j {
     public void addRelations(List<LabelRelation> relations) {
         Transaction tx = graphDb.beginTx();
         Index<Node> nodeIndex = graphDb.index().forNodes("labels");
-        Node labelNode0, labelNode1;
+        Node node0, node1;
         try {
             for (LabelRelation r : relations) {
-                labelNode0 = nodeIndex.get("id", r.getLabelId0()).getSingle();
-                labelNode1 = nodeIndex.get("id", r.getLabelId1()).getSingle();
-                if (labelNode0 != null && labelNode1 != null) {
-                    createLabelRelation(r.getRelType(), labelNode0, labelNode1);
-                }
+                node0 = nodeIndex.get("id", r.getLabelId0()).getSingle();
+                node1 = nodeIndex.get("id", r.getLabelId1()).getSingle();
+                createLabelRelation(r.getRelType(), node0, node1);
             }
             tx.success();
         } finally {
@@ -181,15 +179,21 @@ public final class Neo4j {
         Node childNode = null, parentNode = null;
         Iterator<Node> nodeIter = firstPath.nodes().iterator();
         Relationship rel;
+        String childName, childMbid;
         if (nodeIter.hasNext()) {
             childNode = nodeIter.next();
+            childName = childNode.getProperty("name").toString();
+            childMbid = childNode.getProperty("mbid").toString();
             if (nodeIter.hasNext()) {
                 parentNode = nodeIter.next();
                 rel = this.getRelationship(parentNode, childNode);
-                ret.put(childNode.getProperty("mbid").toString(),
-                        new RiaaLabelTreeNode(parentNode.getProperty("mbid").toString(), rel.getType().toString()));
+                ret.put(childMbid,
+                        new RiaaLabelTreeNode(
+                                childName,
+                                parentNode.getProperty("mbid").toString(), 
+                                rel.getType().toString()));
             } else {
-                ret.put(childNode.getProperty("mbid").toString(), null);
+                ret.put(childMbid, new RiaaLabelTreeNode(childName, null, null));
             }
         }
     }
@@ -208,11 +212,12 @@ public final class Neo4j {
     }
     
     private class RiaaLabelTreeNode {
-        private String parent, labelRel;
+        private String name, parent, parentRel;
         
-        public RiaaLabelTreeNode(String parent, String labelRel) {
+        public RiaaLabelTreeNode(String name, String parent, String parentRel) {
+            this.name = name;
             this.parent = parent;
-            this.labelRel = labelRel;
+            this.parentRel = parentRel;
         }
     }
 

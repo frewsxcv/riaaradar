@@ -37,8 +37,10 @@ public class Main {
         Gson gson = new GsonBuilder().serializeNulls().create();
         PrintWriter out = null;
         try {
-            out = new PrintWriter("riaaPath.js");
-            out.println(gson.toJson(neo4j.getRiaaLabelTree()));
+            out = new PrintWriter("riaaTree.js");
+            out.print("exports.riaaTree = ");
+            out.print(gson.toJson(neo4j.getRiaaLabelTree()));
+            out.print(";");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {
