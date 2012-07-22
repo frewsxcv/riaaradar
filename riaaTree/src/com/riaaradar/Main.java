@@ -1,5 +1,6 @@
 package com.riaaradar;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -36,8 +37,9 @@ public class Main {
         
         Gson gson = new GsonBuilder().serializeNulls().create();
         PrintWriter out = null;
+        (new File("dist")).mkdir();
         try {
-            out = new PrintWriter("riaaTree.js");
+            out = new PrintWriter("dist/riaaTree.js");
             out.print("exports.riaaTree = ");
             out.print(gson.toJson(neo4j.getRiaaLabelTree()));
             out.print(";");

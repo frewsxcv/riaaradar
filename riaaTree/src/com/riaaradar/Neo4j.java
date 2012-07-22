@@ -162,8 +162,8 @@ public final class Neo4j {
     }
 
     // Returns the Map representation of a tree connecting RIAA labels
-    public Map<String, RiaaLabelTreeNode> getRiaaLabelTree() {
-        Map<String, RiaaLabelTreeNode> ret = new HashMap<String, RiaaLabelTreeNode>();
+    public Map<String, RiaaTreeNode> getRiaaLabelTree() {
+        Map<String, RiaaTreeNode> ret = new HashMap<String, RiaaTreeNode>();
         for (Node node : GlobalGraphOperations.at(graphDb).getAllNodes()) {
             Iterator<Path> pathIter = TRAV_DESC.traverse(node).iterator();
             if (pathIter.hasNext()) {
@@ -175,7 +175,7 @@ public final class Neo4j {
         return ret;
     }
     
-    private void putTreeNodes(Map<String, RiaaLabelTreeNode> ret, Path firstPath) {
+    private void putTreeNodes(Map<String, RiaaTreeNode> ret, Path firstPath) {
         Node childNode = null, parentNode = null;
         Iterator<Node> nodeIter = firstPath.nodes().iterator();
         Relationship rel;
@@ -188,12 +188,12 @@ public final class Neo4j {
                 parentNode = nodeIter.next();
                 rel = this.getRelationship(parentNode, childNode);
                 ret.put(childMbid,
-                        new RiaaLabelTreeNode(
+                        new RiaaTreeNode(
                                 childName,
                                 parentNode.getProperty("mbid").toString(), 
                                 rel.getType().toString()));
             } else {
-                ret.put(childMbid, new RiaaLabelTreeNode(childName, null, null));
+                ret.put(childMbid, new RiaaTreeNode(childName, null, null));
             }
         }
     }
@@ -211,10 +211,10 @@ public final class Neo4j {
         return null;
     }
     
-    private class RiaaLabelTreeNode {
+    private class RiaaTreeNode {
         private String name, parent, parentRel;
         
-        public RiaaLabelTreeNode(String name, String parent, String parentRel) {
+        public RiaaTreeNode(String name, String parent, String parentRel) {
             this.name = name;
             this.parent = parent;
             this.parentRel = parentRel;
