@@ -191,9 +191,11 @@ public final class Neo4j {
                         new RiaaTreeNode(
                                 childName,
                                 parentNode.getProperty("mbid").toString(), 
-                                rel.getType().toString()));
+                                rel.getType().toString(),
+                                null));
             } else {
-                ret.put(childMbid, new RiaaTreeNode(childName, null, null));
+                ret.put(childMbid, new RiaaTreeNode(childName, null, null, 
+                        childNode.getProperty("riaa-source").toString()));
             }
         }
     }
@@ -212,12 +214,13 @@ public final class Neo4j {
     }
     
     private class RiaaTreeNode {
-        private String name, parentMbid, parentRel;
+        private String name, parentMbid, parentRel, sourceUrl;
         
-        public RiaaTreeNode(String name, String parentMbid, String parentRel) {
+        public RiaaTreeNode(String name, String parentMbid, String parentRel, String sourceUrl) {
             this.name = name;
             this.parentMbid = parentMbid;
             this.parentRel = parentRel;
+            this.sourceUrl = sourceUrl;
         }
     }
 

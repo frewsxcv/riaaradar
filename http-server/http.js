@@ -16,6 +16,7 @@ var generateBody = function (mbid, res) {
         nodes.push({
             "name": curr.name,
             "parentRel": curr.parentRel || undefined,
+            "sourceUrl": curr.sourceUrl || undefined,
             "mbid": mbid
         });
         mbid = curr.parentMbid;
