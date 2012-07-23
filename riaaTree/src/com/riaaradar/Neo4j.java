@@ -212,11 +212,11 @@ public final class Neo4j {
     }
     
     private class RiaaTreeNode {
-        private String name, parent, parentRel;
+        private String name, parentMbid, parentRel;
         
-        public RiaaTreeNode(String name, String parent, String parentRel) {
+        public RiaaTreeNode(String name, String parentMbid, String parentRel) {
             this.name = name;
-            this.parent = parent;
+            this.parentMbid = parentMbid;
             this.parentRel = parentRel;
         }
     }
