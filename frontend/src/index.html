@@ -1,23 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
    <head>
-      <title>RIAARadar Search</title>
+      <title>RIAA Radar</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta charset="UTF-8">
-      <link href="style/search.css" rel="stylesheet" type="text/css">
       <link href="favicon.ico" rel="icon"> 
-      <script data-main="script/main" src="script/require-jquery.js"></script>
+      <link href="css/bootstrap.css" rel="stylesheet">
+      <style>
+         body {
+            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+         }
+      </style>
+      <link href="css/bootstrap-responsive.css" rel="stylesheet">
    </head>
    <body>
-      <header>
-         <div id="logo"></div>
-         <nav></nav>
-      </header>
-      <div id="wrapper">
-         <div id="search-box">
-            <input id="search-field" type="text" size="100" placeholder="Enter an artist (e.g. Nine Inch Nails)">
-            <div id="search-button"></div>
+
+      <!-- NAVBAR -->
+      <div class="navbar navbar-fixed-top">
+         <div class="navbar-inner">
+            <div class="container">
+               <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                  <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+               </a>
+               <a class="brand" href="#">RIAA Radar</a>
+               <div class="nav-collapse">
+                  <ul class="nav">
+                     <li class="active"><a href="#">Search</a></li><li><a href="#about">The Big Four</a></li><li><a href="#contact">Top 50</a></li>
+                  </ul>
+               </div>
+            </div>
          </div>
-         <ol id="results"></ol>
       </div>
+
+      <!-- CONTAINER -->
+      <div class="container">
+         <div class="row">
+            <div class="span6">
+               <div id="search" class="input-append">
+                  <input type="text" class="span4" placeholder="Enter an artist (e.g. Nine Inch Nails)"><button class="btn" type="button">Search</button>
+               </div>
+            </div>
+            <div class="span6">
+               <h1>Welcome to RIAA Radar!</h1>
+               <p>This website is guaranteed to be unstable. Report all problems.</p>
+            </div>
+         </div>
+         <ul id="results" class="thumbnails"></ul>
+      </div>
+
+      <!-- -->
+      <script data-main="js/main" src="js/require-jquery.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+      <script src="js/jquery.masonry.min.js"></script>
    </body>
 </html>
