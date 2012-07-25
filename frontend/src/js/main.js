@@ -4,22 +4,53 @@ require(["musicbrainz", "jquery"], function (MBz, $) {
         $results;
 
     // Shows the release groups of the given artist
-    var showRelGroups = function (artist) {
-        artist.getReleaseGroups(function (relGroups) {
+    var showRelease = function (relGroup) {
+        relGroup.getReleases(function (releases) {
             $results.empty();
-            relGroups.sort(function (a, b) {
-                return a.year < b.year ? -1 : 1;
+            releases.forEach(function (release) {
+                release.getRiaaPath(function (path) {
+                    $results.append("<h3>" + release.title + "</h3><p>");
+                    if (path.length === 0) {
+                        $results.append("<span class='label label-success'>No path to RIAA member found</span>");
+                    }
+                    path.forEach(function (label, ndx) {
+                        if (ndx === path.length - 1) {
+                            $results.append("<span class='label label-important'>" + label.name + "</span> (<a href='" + label.sourceUrl + "'>source</a>)");
+                        } else {
+                            $results.append("<span class='label'>" + label.name + "</span>");
+                        }
+                        if (label.parentRel !== undefined) {
+                            $results.append("---" + label.parentRel + "-->");
+                        }
+                    });
+                    $results.append("</p>");
+                });
             });
-            relGroups.forEach(function (relGroup) {
-                var $html = $(relGroup.getThumbnailHtml());
-                $html.find('img').attr('src', 'http://img.ehowcdn.com/article-new/ehow/images/a07/bg/74/easiest-album-art-itunes-8-800x800.jpg');
-                $results.append($html);
+        });
+    };
+
+    // Shows the release groups of the given artist
+    var showRelGroups = function (artist) {
+        artist.getReleaseGroups(function (relGroupsMap) {
+            var $thumbnails;
+            $results.empty();
+            $.each(relGroupsMap, function (type, relGroups) {
+                $results.append("<h1>" + type + "</h1><ul class='thumbnails'></ul>");
+                $thumbnails = $("#results > .thumbnails:last");
+                relGroups.forEach(function (relGroup) {
+                    var $thumbHtml = $(relGroup.getThumbnailHtml());
+                    $thumbHtml.find('img').attr('src', 'http://img.ehowcdn.com/article-new/ehow/images/a07/bg/74/easiest-album-art-itunes-8-800x800.jpg');
+                    $thumbHtml.click(function () {
+                        showRelease(relGroup);
+                    });
+                    $thumbnails.append($thumbHtml);
+                });
             });
         });
     };
 
     /*
-    var meow = function () {
+    meow = function () {
         var $container = $('.thumbnails');
         $container.imagesLoaded(function () {
             $container.masonry({
@@ -60,16 +91,20 @@ require(["musicbrainz", "jquery"], function (MBz, $) {
 
     // Show the artists returned from the search query
     var showArtists = function () {
-        var artistQuery = $searchField.val();
-        $results.empty();
-        MBz.artistSearch(artistQuery, function (artist) {
-            var $thumbHtml = $(artist.getThumbnailHtml());
-            $thumbHtml.click(function () {
-                showRelGroups(artist);
-            });
-            $results.append($thumbHtml);
-            artist.getImage(function (imageUrl) {
-                $thumbHtml.find('img').attr('src', imageUrl);
+        var artistQuery = $searchField.val(),
+            $thumbnails;
+        $results.empty().append("<ul class='thumbnails'></ul>");
+        $thumbnails = $("#results > .thumbnails");
+        MBz.artistSearch(artistQuery, function (artists) {
+            artists.forEach(function (artist) {
+                var $thumbHtml = $(artist.getThumbnailHtml());
+                $thumbHtml.click(function () {
+                    showRelGroups(artist);
+                });
+                $thumbnails.append($thumbHtml);
+                artist.getImage(function (imageUrl) {
+                    $thumbHtml.find('img').attr('src', imageUrl);
+                });
             });
         });
     };
@@ -86,7 +121,7 @@ require(["musicbrainz", "jquery"], function (MBz, $) {
                 }
             });
         } else {
-            alert("Sorry, your browser doesn't support CORS");
+            alert("Sorry, your browser doesn't support CORS.");
         }
     });
 });

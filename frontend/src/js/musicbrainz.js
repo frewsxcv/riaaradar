@@ -4,18 +4,17 @@ define(["jquery", "artist"], function ($, Artist) {
     // Queries the MusicBrainz database for artists
     var artistSearch = function (name, callback) {
         var mbzQuery = baseAPI + 'artist?query=' +
-                encodeURIComponent(name) + '&limit=10',
+                encodeURIComponent(name) + '&limit=15',
             artists = [];
         $.ajax({
             url: mbzQuery,
             dataType: 'xml',
             success: function (data) {
-                $(data).find('artist-list').children(function () {
-                });
-                $(data).find('artist-list').each(function () {
+                var children = $(data).find('artist-list').children();
+                children.each(function () {
                     artists.push(new Artist($(this)));
-                    callback(new Artist($(this)));
                 });
+                callback(artists);
             },
             failure: function () {
                 alert('Unable to connect to the MusicBrainz servers');

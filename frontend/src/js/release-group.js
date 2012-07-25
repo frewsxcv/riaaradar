@@ -1,4 +1,5 @@
-define(["lastfm", "jquery"], function (LastFm, $) {
+define(["lastfm", "release", "jquery"], function (LastFm, Release, $) {
+    var baseAPI = "http://www.musicbrainz.org/ws/2/";
 
     // MusicBrainz release group from API
     var ReleaseGroup = function ($mbRelGroup) {
@@ -16,6 +17,26 @@ define(["lastfm", "jquery"], function (LastFm, $) {
     };
 
     ReleaseGroup.prototype.getAlbumArt = LastFm.getAlbumArt;
+
+    // Get the releases for this release group
+    ReleaseGroup.prototype.getReleases = function (callback) {
+        var query = baseAPI + "release?release-group=" + this.mbid + "&limit=100&inc=labels";
+        $.ajax({
+            url: query,
+            dataType: "xml",
+            success: function (data) {
+                var releases = [];
+                var children = $(data).find('release-list').children();
+                children.each(function () {
+                    releases.push(new Release($(this)));
+                });
+                callback(releases);
+            },
+            failure: function () {
+                alert("Unable to connect to the MusicBrainz servers");
+            }
+        });
+    };
 
     ReleaseGroup.prototype.getRiaaStatus = function (callback) {
         /*

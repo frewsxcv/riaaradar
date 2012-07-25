@@ -1,6 +1,6 @@
 ({
     appDir: "../",
-    baseUrl: "script",
+    baseUrl: "js",
     dir: "../../build",
     optimize: "uglify",
 

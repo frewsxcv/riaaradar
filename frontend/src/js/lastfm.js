@@ -11,6 +11,10 @@ define(["jquery"], function ($) {
             dataType: 'json',
             success: function (data) {
                 var ndx;
+                if (!data.artist) {
+                    callback(defaultImage);
+                    return;
+                }
                 for (ndx = 4; ndx > 0; ndx -= 1) {
                     if (data.artist.image[ndx]['#text'].length > 0) {
                         callback(data.artist.image[ndx]['#text']);
