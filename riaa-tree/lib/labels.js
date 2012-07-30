@@ -115,12 +115,20 @@
     '4d204722-f022-4b6e-8b76-0e06a45ffcdc':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=h',
 
+    // Ichiban
+    'ebe63a3b-3bff-41d5-95f6-bfdf0e7d8c2a':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=i',
+
     // InsideOut Music
     'af64e67e-e3e9-4bc3-bb1a-f8c23f285b31':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=i',
 
     // Interscope
     '2182a316-c4bd-4605-936a-5e2fac52bdd2':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=i',
+
+    // Ironworks
+    '67f6e770-32aa-44b6-9657-256eeb98bc9d':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=i',
 
     // Island Records
@@ -145,6 +153,14 @@
 
     // Nuclear Blast America
     'ea3b46c1-f7cd-466c-9a26-23d55678b0f1':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=n',
+
+    // Null Corporation
+    'f6f102a5-f7f0-49aa-8470-f71d083e3439':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=n',
+
+    // Nylon Records
+    '122cb3e5-6674-45df-92b1-5b55ee1c8dba':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=n',
 
     // Parlophone
@@ -175,6 +191,18 @@
     '38dc88de-7720-4100-9d5b-3cdc41b0c474':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=s',
 
+    // Temporary Residence
+    'ce05124e-f6be-4f68-b73a-1dfda9e2b576':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=t',
+
+    // Terror Squad
+    'dc7ce10f-9280-44ee-8cc6-a5087566ea80':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=t',
+
+    // Tragic Hero
+    '1b78eb63-245f-4e7c-974a-66fc3e0d1e21':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=t',
+
     // Universal Music Group
     '19d052fa-570a-4b17-9a3d-8f2f029b7b57':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=u',
@@ -183,8 +211,20 @@
     '44f4d815-bf54-4f56-b704-72a196c6bd58':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=v',
 
+    // Velas
+    'be1926b1-5be0-43e6-a52e-019b6f550a77':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=v',
+
+    // Vice Records
+    '4e909fce-55f3-422c-94f1-7d294b60e776':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=v',
+
     // Virgin
     '49b58bdb-3d74-40c6-956a-4c4b46115c9c':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=v',
+
+    // Virgin Classics
+    'aeae98ea-d990-4312-a3ec-e27b04a2715f':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=v',
 
     // Warner Music Group
@@ -201,5 +241,9 @@
 
     // XL Recordings
     '14221f01-8939-4ea0-b8f1-b5a21beae80a':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=x',
+
+    // XOXO
+    '5fc43444-6cf8-4c93-a312-4ae6bbfab704':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=x'
 }
