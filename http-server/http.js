@@ -3,7 +3,7 @@
 // Imports
 var http = require("http");
 var urlParse = require("url").parse;
-var riaaTree = require("../riaaTree/dist/riaaTree.js").riaaTree;
+var riaaTree = require("../riaa-tree/dist/riaaTree.js").riaaTree;
 
 // HTTP server port
 var httpPort = 4567;
