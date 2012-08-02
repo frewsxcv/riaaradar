@@ -37,8 +37,28 @@ define(["jquery"], function ($) {
         return "style/img/noartist.png";
     };
 
+    var getTop50 = function(callback){
+        $.ajax({
+            url: [
+                "http://ws.audioscrobbler.com/2.0/",
+                "?method=chart.getTopTracks",
+                "&api_key=" + apiKey,
+                "&format=json",
+                "&limit=50"
+            ].join(""),
+            dataType: "json",
+            success: function(data){
+                callback(data.tracks.track);
+            },
+            failure: function () {
+                console.error("FAIL");
+            }
+        });
+    };
+
     return {
         getArtistImage: getArtistImage,
-        getAlbumArt: getAlbumArt
+        getAlbumArt: getAlbumArt,
+        getTop50: getTop50
     };
 });

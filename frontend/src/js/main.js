@@ -1,7 +1,10 @@
-require(["musicbrainz", "jquery", "artist", "release"], function (Mbz, $, Artist, Release) {
+require(["musicbrainz", "jquery", "artist", "release", "lastfm"], function (Mbz, $, Artist, Release, LastFm) {
     var $searchField,
         $searchButton,
-        $results;
+        $results,
+        $top50,
+        $navSearch;
+
 
     // Shows the release groups of the given artist
     var showReleases = function (artist) {
@@ -28,7 +31,6 @@ require(["musicbrainz", "jquery", "artist", "release"], function (Mbz, $, Artist
             });
         });
     };
-
     // Show the artists returned from the search query
     var showArtists = function () {
         var artistQuery = $searchField.val(),
@@ -52,16 +54,40 @@ require(["musicbrainz", "jquery", "artist", "release"], function (Mbz, $, Artist
         }
     };
 
+    var showTop50 = function () {
+        LastFm.getTop50(function (tracks) {
+            console.log(tracks);
+        });
+    };
+
+
     $(document).ready(function () {
         if ($.support.cors) {
             $searchField = $("#search input").focus();
             $searchButton = $("#search button");
+            $navSearch = $("#nav-search");
             $results = $("#results");
-            $searchButton.click(showArtists);
+
+            $searchButton.click(function(){
+                showArtists();
+            });
+
+            $navSearch.click( function(){
+                $("#top50Page").hide();
+                $("#searchPage").show();
+            });
+
             $searchField.keyup(function (evt) {
                 if (evt.keyCode === 13) {
                     showArtists();
                 }
+            });
+
+            $top50 = $("#nav-top50");
+            $top50.click(function(){
+                $("#searchPage").hide();
+                $("#top50Page").show();
+                showTop50();
             });
         } else {
             alert("Sorry, your browser doesn't support CORS.");

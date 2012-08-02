@@ -27,7 +27,7 @@
          <a class="brand" href="#">RIAA Radar</a>
          <div class="nav-collapse">
             <ul class="nav">
-               <li class="active"><a href="#search">Search</a></li><li style="text-decoration: line-through;"><a href="#bigfour">The Big Four</a></li><li style="text-decoration: line-through;"><a href="#top50">Top 50</a></li>
+               <li id="nav-search" class="active"><a href="#search">Search</a></li><li style="text-decoration: line-through;"><a href="#bigfour">The Big Four</a></li><li id="nav-top50"><a href="#top50">Top 50</a></li>
             </ul>
          </div>
       </div>
@@ -36,18 +36,24 @@
 
 <!-- CONTAINER -->
 <div class="container">
-   <div class="row">
-      <div class="span6">
-         <div id="search" class="input-append">
-            <input type="text" class="span4" placeholder="Enter an artist (e.g. Nine Inch Nails)"><button class="btn" type="button">Search</button>
+   <div id="searchPage">
+      <div class="row">
+         <div class="span6">
+            <div id="search" class="input-append">
+               <input type="text" class="span4" placeholder="Enter an artist (e.g. Nine Inch Nails)"><button class="btn" type="button">Search</button>
+            </div>
+         </div>
+         <div class="span6">
+            <h1>Welcome to RIAA Radar!</h1>
+            <p>This website is guaranteed to be unstable. Report all problems <a href="http://github.com/frelsi/riaaradar">to the GitHub</a>.</p>
          </div>
       </div>
-      <div class="span6">
-         <h1>Welcome to RIAA Radar!</h1>
-         <p>This website is guaranteed to be unstable. Report all problems <a href="http://github.com/frelsi/riaaradar">to the GitHub</a>.</p>
-      </div>
+      <div id="results"></div>
    </div>
-   <div id="results"></div>
+
+   <div id="top50Page">
+       <table class="tabe table-striped"></table>
+   </div>
 </div>
 
 <!-- SCRIPTS -->
