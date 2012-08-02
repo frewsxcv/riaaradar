@@ -1,8 +1,8 @@
-define(["release-group", "lastfm", "jquery"], function (ReleaseGroup, LastFm, $) {
-    var baseAPI = "http://www.musicbrainz.org/ws/2/";
-
+define(["jquery", "lastfm", "musicbrainz"], function ($, LastFm, Mbz) {
     // MusicBrainz artist from API
-    var Artist = function ($mbArtist) {
+    var Artist = function (mbArtist) {
+        var $mbArtist = $(mbArtist);
+
          // Name of the artist 
         this.name = $mbArtist.children("name").text();
 
@@ -14,31 +14,9 @@ define(["release-group", "lastfm", "jquery"], function (ReleaseGroup, LastFm, $)
     };
 
     // Get the release groups for this artist
-    Artist.prototype.getReleaseGroups = function (callback) {
-        var query = baseAPI + "release-group?artist=" + this.mbid + "&limit=100";
-        $.ajax({
-            url: query,
-            dataType: "xml",
-            success: function (data) {
-                var relGroups = {};
-                var children = $(data).find('release-group-list').children();
-                children.each(function () {
-                    var relGroup = new ReleaseGroup($(this));
-                    if (relGroups[relGroup.type] === undefined) {
-                        relGroups[relGroup.type] = [];
-                    }
-                    relGroups[relGroup.type].push(relGroup);
-                });
-                /*
-                relGroups.sort(function (a, b) {
-                    return a.type < b.type ? -1 : 1;
-                });
-                */
-                callback(relGroups);
-            },
-            failure: function () {
-                alert("Unable to connect to the MusicBrainz servers");
-            }
+    Artist.prototype.getReleases = function (callback) {
+        Mbz.getReleases(this.mbid, function ($releases) {
+            callback($releases);
         });
     };
 

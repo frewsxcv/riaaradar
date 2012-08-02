@@ -1,112 +1,55 @@
-require(["musicbrainz", "jquery"], function (MBz, $) {
+require(["musicbrainz", "jquery", "artist", "release"], function (Mbz, $, Artist, Release) {
     var $searchField,
         $searchButton,
         $results;
 
     // Shows the release groups of the given artist
-    var showRelease = function (relGroup) {
-        relGroup.getReleases(function (releases) {
+    var showReleases = function (artist) {
+        artist.getReleases(function ($releases) {
+            var releases = [],
+                groupedRels;
             $results.empty();
-            releases.forEach(function (release) {
-                release.getRiaaPath(function (path) {
-                    $results.append("<h3>" + release.title + "</h3><p>");
-                    if (path.length === 0) {
-                        $results.append("<span class='label label-success'>No path to RIAA member found</span>");
-                    }
-                    path.forEach(function (label, ndx) {
-                        if (ndx === path.length - 1) {
-                            $results.append("<span class='label label-important'>" + label.name + "</span> (<a href='" + label.sourceUrl + "'>source</a>)");
-                        } else {
-                            $results.append("<span class='label'>" + label.name + "</span>");
-                        }
-                        if (label.parentRel !== undefined) {
-                            $results.append("---" + label.parentRel + "-->");
-                        }
+            $releases.each(function () {
+                releases.push(new Release(this));
+            });
+            groupedRels = Mbz.groupReleases(releases);
+            $.each(groupedRels, function (type, relGroups) {
+                $results.append("<h3>" + type + "</h3>");
+                $.each(relGroups, function (relGroupMbid, relGroup) {
+                    $results.append("<h4>" + relGroup[0].groupTitle + "</h4>");
+                    relGroup.forEach(function (rel) {
+                        rel.getRiaaPath(function (path) {
+                            console.log(rel.title);
+                            console.log(path);
+                            console.log("--------------");
+                        });
                     });
-                    $results.append("</p>");
                 });
             });
         });
     };
-
-    // Shows the release groups of the given artist
-    var showRelGroups = function (artist) {
-        artist.getReleaseGroups(function (relGroupsMap) {
-            var $thumbnails;
-            $results.empty();
-            $.each(relGroupsMap, function (type, relGroups) {
-                $results.append("<h1>" + type + "</h1><ul class='thumbnails'></ul>");
-                $thumbnails = $("#results > .thumbnails:last");
-                relGroups.forEach(function (relGroup) {
-                    var $thumbHtml = $(relGroup.getThumbnailHtml());
-                    $thumbHtml.find('img').attr('src', 'http://img.ehowcdn.com/article-new/ehow/images/a07/bg/74/easiest-album-art-itunes-8-800x800.jpg');
-                    $thumbHtml.click(function () {
-                        showRelease(relGroup);
-                    });
-                    $thumbnails.append($thumbHtml);
-                });
-            });
-        });
-    };
-
-    /*
-    meow = function () {
-        var $container = $('.thumbnails');
-        $container.imagesLoaded(function () {
-            $container.masonry({
-                itemSelector : '.span3'
-            });
-        });
-    };
-    */
-
-    /*
-    function init_masonry(){
-        var $container = $('#content');
-
-        var gutter = 12;
-        var min_width = 150;
-        $container.imagesLoaded( function(){
-            $container.masonry({
-                itemSelector : '.box',
-                gutterWidth: gutter,
-                isAnimated: true,
-                  columnWidth: function( containerWidth ) {
-                    var num_of_boxes = (containerWidth/min_width | 0);
-
-                    var box_width = (((containerWidth - (num_of_boxes-1)*gutter)/num_of_boxes) | 0) ;
-
-                    if (containerWidth < min_width) {
-                        box_width = containerWidth;
-                    }
-
-                    $('.box').width(box_width);
-
-                    return box_width;
-                  }
-            });
-        });
-    }
-     */
 
     // Show the artists returned from the search query
     var showArtists = function () {
         var artistQuery = $searchField.val(),
             $thumbnails;
-        $results.empty().append("<ul class='thumbnails'></ul>");
-        $thumbnails = $("#results > .thumbnails");
-        MBz.artistSearch(artistQuery, function (artists) {
-            artists.forEach(function (artist) {
-                var $thumbHtml = $(artist.getThumbnailHtml());
-                $thumbHtml.click(function () {
-                    showRelGroups(artist);
-                });
-                $thumbnails.append($thumbHtml);
-                artist.getImage(function (imageUrl) {
-                    $thumbHtml.find('img').attr('src', imageUrl);
+        if (artistQuery.length > 0) {
+            $results.empty().append("<ul class='thumbnails'></ul>");
+            $thumbnails = $("#results > .thumbnails");
+            Mbz.artistSearch(artistQuery, function ($artists) {
+                $artists.each(function () {
+                    var artist = new Artist(this);
+                    var $thumbHtml = $(artist.getThumbnailHtml());
+                    $thumbHtml.click(function () {
+                        showReleases(artist);
+                    });
+                    $thumbnails.append($thumbHtml);
+                    artist.getImage(function (imageUrl) {
+                        $thumbHtml.find('img').attr('src', imageUrl);
+                    });
                 });
             });
-        });
+        }
     };
 
     $(document).ready(function () {
