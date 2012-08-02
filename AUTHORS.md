@@ -2,3 +2,4 @@
 
 * [Ben Tesch](http://bentesch.com) - Previous leader of the project
 * [Corey Farwell](http://rwell.org) - Current leader of the project
+* [Micah Lerner](twiter.com/micahlerner) - Minion to Corey Farwell 
