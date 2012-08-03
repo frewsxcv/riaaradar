@@ -87,6 +87,10 @@
     '011d1192-6f65-45bd-85c4-0400dd45693e':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=c',
 
+    // Death Row Records
+    '2285cdbd-a7b6-464a-9bc0-c549051454d9':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=d',
+
     // Decca
     'f18f3b31-8263-4de3-966a-fda317492d3d':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=d',
@@ -174,6 +178,10 @@
     // Rhino
     'c4f2cf49-b57c-4cc1-8061-f54400704ac4':
         'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=r',
+
+    // Samples 'n' Seconds
+    'daf1630b-9519-4a2a-80eb-62e9ed881922':
+        'http://riaa.com/aboutus.php?content_selector=aboutus_members&f=s',
 
     // Secretly Canadian
     'dd6afc9a-6352-4c96-aeb6-9a73e2bf1519':
