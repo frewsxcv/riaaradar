@@ -27,7 +27,7 @@
          <a class="brand" href="#">RIAA Radar</a>
          <div class="nav-collapse">
             <ul class="nav">
-               <li id="nav-search" class="active"><a href="#search">Search</a></li><li style="text-decoration: line-through;"><a href="#bigfour">The Big Four</a></li><li id="nav-top50"><a href="#top50">Top 50</a></li>
+               <li id="nav-search" class="active"><a class="nav-search" href="#search">Search</a></li><li style="text-decoration: line-through;"><a href="#bigfour">The Big Four</a></li><li id="nav-charts"><a href="#charts">Charts</a></li>
             </ul>
          </div>
       </div>
@@ -51,8 +51,42 @@
       <div id="results"></div>
    </div>
 
-   <div id="top50Page">
-       <table class="tabe table-striped"></table>
+   <div id="chartsPage" style="display: none">
+    <ul class="nav nav-pills">
+        <li id="lastFmButton" class="active">
+            <a id="lastFmCharts" href="#lastfmCharts"> Last.fm Top 50 Songs</a>
+        </li>
+        <li id="billboardButton" class="dropdown">
+            <a id="billboardCharts" class="dropdown-toggle" data-toggle="dropdown" href="#"> Billboard Charts<b class="caret"></b></a>
+            <ul id="billboardMenu" class="dropdown-menu">
+              <li id="billboardAlbumDropdown"><a href="#billboardTopAlbums">Billboard Top 50 Albums</a></li>
+              <li id="billboardSongDropdown"><a href="#billboardTopSongs">Billboard Top 50 Songs</a></li>
+            </ul>
+        </li>
+        <li id="itunesButton" class="dropdown">
+            <a id="itunesCharts" class="dropdown-toggle" data-toggle="dropdown" href="#"> iTunes Charts<b class="caret"></b></a>
+            <ul id="itunesMenu" class="dropdown-menu">
+              <li><a href="#itunesTopAlbums">iTunes Top 50 Albums</a></li>
+              <li><a href="#itunesTopSongs">iTunes Top 50 Songs</a></li>
+            </ul>
+        </li>
+        <li id="amazonButton" class>
+            <a id="amazonCharts" href="#amazonCharts"> Amazon Charts</a>
+        </li>
+    </ul>
+       <table class="table table-striped">
+           <thead id=>
+               <tr>
+                   <th>#</th>
+                   <th>Song name</th>
+                   <th>Artist</th>
+                   <th id="playCount" >Last.fm Playcount</th>
+                   <th>Artist is on an RIAA label? (mouseover for details)</th>
+               </tr>
+            </thead>
+            <tbody id="chart-body">
+            </tbody>
+       </table>
    </div>
 </div>
 

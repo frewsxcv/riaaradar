@@ -54,26 +54,62 @@ require(["musicbrainz", "jquery", "artist", "release", "lastfm"], function (Mbz,
         }
     };
 
-    var showTop50 = function () {
-        LastFm.getTop50(function (tracks) {
-            console.log(tracks);
+    var showLastFmTop50 = function () {
+        LastFm.getLastFmTop50(function (tracks) {
+            var counter = 1;
+            //console.log(tracks);
+            $.each(tracks.track, function(index, track){
+                console.log(track.name);
+                $chartBody.append(['<tr><td>' + (index + 1)+ '</td>',
+                                   '<td>' + track.name + '</td>',
+                                   '<td>' + track.artist.name + '</td>',
+                                   '<td>' + track.playcount+ '</td></tr>',
+                                   ].join("") );
+            });
         });
+    };
+
+    var repopulateChartData = function(chart){
+        $("chart-body.tr").remove();
+        if (chart.indexOf("billboard") > -1){
+            showBillBoardTop200();
+        }
+    };
+    var updateChartSelection = function(selection){
+        $("nav nav-pil > *").removeClass("active");
     };
 
 
     $(document).ready(function () {
         if ($.support.cors) {
+            $('.dropdown-toggle').dropdown()
             $searchField = $("#search input").focus();
             $searchButton = $("#search button");
             $navSearch = $("#nav-search");
+            $navBrand = $("a.brand");
+            console.log($navBrand);
             $results = $("#results");
+
+            //Charts jQuery
+            $navCharts = $("#nav-charts");
+            $chartBody = $("#chart-body");
+            $lastFmChart = $("#lastFmChart");
+            $lastFmButton = $("#lastFmButton");
+            $billboardSongDropdown = $("#billboardSongDropdown");
+            $billboardAlbumDropdown = $("#billboardAlbumDropdown");
 
             $searchButton.click(function(){
                 showArtists();
             });
 
             $navSearch.click( function(){
-                $("#top50Page").hide();
+                console.log("nav-search clicked");
+                $("#searchPage").show();
+                $("#chartsPage").hide();
+            });
+
+            $navBrand.click( function(){
+                $("#chartsPage").hide();
                 $("#searchPage").show();
             });
 
@@ -83,12 +119,29 @@ require(["musicbrainz", "jquery", "artist", "release", "lastfm"], function (Mbz,
                 }
             });
 
-            $top50 = $("#nav-top50");
-            $top50.click(function(){
-                $("#searchPage").hide();
-                $("#top50Page").show();
-                showTop50();
+            $billboardSongDropdown.click(function(){
+                console.log("billboardSongDropdown selected!");
+                updateChartSelection("#billBoardSongDropdown");
+            //    $lastFmButton.toggleClass("active");
             });
+
+            $billboardSongDropdown.click(function(){
+                console.log("billboardSongDropdown selected!");
+                $lastFmButton.toggleClass("active");
+            });
+
+
+            $navCharts.click(function(){
+
+                $("#searchPage").hide();
+                $("#chartsPage").show();
+                $navSearch.toggleClass("active");
+                $navCharts.toggleClass("active");
+                showLastFmTop50();
+            });
+            /*$billboardChart.click(function(){
+                populateChartData("#billboardChart");
+            });*/
         } else {
             alert("Sorry, your browser doesn't support CORS.");
         }

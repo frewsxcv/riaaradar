@@ -37,7 +37,7 @@ define(["jquery"], function ($) {
         return "style/img/noartist.png";
     };
 
-    var getTop50 = function(callback){
+    var getLastFmTop50 = function(callback){
         $.ajax({
             url: [
                 "http://ws.audioscrobbler.com/2.0/",
@@ -48,7 +48,8 @@ define(["jquery"], function ($) {
             ].join(""),
             dataType: "json",
             success: function(data){
-                callback(data.tracks.track);
+                console.log(data.tracks);
+                callback(data.tracks);
             },
             failure: function () {
                 console.error("FAIL");
@@ -59,6 +60,6 @@ define(["jquery"], function ($) {
     return {
         getArtistImage: getArtistImage,
         getAlbumArt: getAlbumArt,
-        getTop50: getTop50
+        getLastFmTop50: getLastFmTop50
     };
 });
