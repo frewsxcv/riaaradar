@@ -1,4 +1,4 @@
-define(["lastfm", "jquery", "label"], function (LastFm, $, Label) {
+define(["cs!lastfm", "jquery", "label"], function (LastFm, $, Label) {
     // MusicBrainz release group from API
     var Release = function (mbRelease) {
         var $mbRelease = $(mbRelease);
@@ -39,21 +39,28 @@ define(["lastfm", "jquery", "label"], function (LastFm, $, Label) {
         LastFm.getAlbumArt(this.mbid);
     };
 
-    Release.prototype.getRiaaPath = function (callback) {
-        var query = "/server?mbid=" + this.labels[0].mbid;
-        console.log(query);
-        $.ajax({
-            url: query,
-            dataType: "json",
-            success: function (data) {
-                if (data.path !== undefined) {
-                    callback(data.path);
+    var fetchRiaaPath = function (labelMbid, callback) {
+        var query = "/server?mbid=" + labelMbid;
+        $.getJSON(query, function (data) {
+            var ret = {"msg": "error"};
+            if (data.path !== undefined) {
+                if (data.path.length === 0) {
+                    ret.msg = "no path";
+                } else {
+                    ret = {"path": data.path};
                 }
-            },
-            failure: function () {
-                alert("Unable to connect to the RIAA Radar servers");
             }
+            callback(ret);
         });
+    };
+
+    // TODO: This should take into account multiple labels
+    Release.prototype.getRiaaPath = function (callback) {
+        if (this.labels.length > 0 && this.labels[0].name !== "[no label]") {
+            fetchRiaaPath(this.labels[0].mbid, callback);
+        } else {
+            callback({"msg": "no labels"});
+        }
     };
 
     return Release;

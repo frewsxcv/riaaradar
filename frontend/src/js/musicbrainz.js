@@ -5,7 +5,7 @@ define(["jquery"], function ($) {
         $.ajax({
             url: query,
             dataType: 'xml',
-            headers: {'User-Agent': 'RIAA Radar/0.1 Alpha (founders@frelsi.org)'},
+            //headers: {'User-Agent': 'RIAA Radar/0.1 Alpha (founders@frelsi.org)'},
             success: callback,
             failure: function () {
                 alert('Unable to connect to the MusicBrainz servers');
@@ -15,7 +15,7 @@ define(["jquery"], function ($) {
 
     // Queries the MusicBrainz database for artists
     var artistSearch = function (name, callback) {
-        var query = baseApi + 'artist?query=' + encodeURIComponent(name) + '&limit=15',
+        var query = baseApi + 'artist?query=' + encodeURIComponent(name) + '&limit=10',
             artists = [];
         queryMusicbrainz(query, function (data) {
             var $artists = $(data).find('artist-list').children();

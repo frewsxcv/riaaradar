@@ -1,14 +1,15 @@
-require(["musicbrainz", "jquery", "artist", "release", "lastfm"], function (Mbz, $, Artist, Release, LastFm) {
-    var $searchField,
+require(["musicbrainz", "jquery", "cs!artist", "release", "cs!utils"], function (Mbz, jQuery, Artist, Release, utils) {
+    var $ = jQuery,
+        $artists,
         $searchButton,
-        $results,
         $top50,
         $navSearch;
-
 
     // Shows the release groups of the given artist
     var showReleases = function (artist) {
         artist.getReleases(function ($releases) {
+            //console.log($releases);
+            /*
             var releases = [],
                 groupedRels;
             $results.empty();
@@ -17,80 +18,75 @@ require(["musicbrainz", "jquery", "artist", "release", "lastfm"], function (Mbz,
             });
             groupedRels = Mbz.groupReleases(releases);
             $.each(groupedRels, function (type, relGroups) {
-                $results.append("<h3>" + type + "</h3>");
+                $results.append("<h2>" + type + "</h2>");
                 $.each(relGroups, function (relGroupMbid, relGroup) {
-                    $results.append("<h4>" + relGroup[0].groupTitle + "</h4>");
+                    $results.append("<h3>" + relGroup[0].groupTitle + "</h3>");
                     relGroup.forEach(function (rel) {
                         rel.getRiaaPath(function (path) {
+                            if (path.hasOwnProperty("path")) {
+                                console.log("!!!Affiliated!!!!");
+                            }
                             console.log(rel.title);
                             console.log(path);
                             console.log("--------------");
                         });
                     });
                 });
-            });
-        });
-    };
-    // Show the artists returned from the search query
-    var showArtists = function () {
-        var artistQuery = $searchField.val(),
-            $thumbnails;
-        if (artistQuery.length > 0) {
-            $results.empty().append("<ul class='thumbnails'></ul>");
-            $thumbnails = $("#results > .thumbnails");
-            Mbz.artistSearch(artistQuery, function ($artists) {
-                $artists.each(function () {
-                    var artist = new Artist(this);
-                    var $thumbHtml = $(artist.getThumbnailHtml());
-                    $thumbHtml.click(function () {
-                        showReleases(artist);
-                    });
-                    $thumbnails.append($thumbHtml);
-                    artist.getImage(function (imageUrl) {
-                        $thumbHtml.find('img').attr('src', imageUrl);
-                    });
-                });
-            });
-        }
-    };
-
-    var showTop50 = function () {
-        LastFm.getTop50(function (tracks) {
-            console.log(tracks);
+            });*/
         });
     };
 
-
-    $(document).ready(function () {
-        if ($.support.cors) {
-            $searchField = $("#search input").focus();
-            $searchButton = $("#search button");
-            $navSearch = $("#nav-search");
-            $results = $("#results");
-
-            $searchButton.click(function(){
-                showArtists();
-            });
-
-            $navSearch.click( function(){
-                $("#top50Page").hide();
-                $("#searchPage").show();
-            });
-
-            $searchField.keyup(function (evt) {
-                if (evt.keyCode === 13) {
-                    showArtists();
+    var showArtist = function () {
+        var artist = new Artist(this),
+            $artist = $(artist.toHtml());
+        //console.log(artist);
+        $artist.click(function () {
+            showReleases(artist);
+        });
+        $artists.append($artist);
+        artist.getImage(function (imageUrl) {
+            $artist.children('div.image').css('background-image', "url('" + imageUrl + "')");
+            utils.getImageDimensions(imageUrl, function (width, height) {
+                //console.log("width: " + width);
+                //console.log("height: " + height);
+                if (width > height) {
+                    $artist.children('div.image').css('background-size', "auto 100%");
+                } else {
+                    $artist.children('div.image').css('background-size', "100% auto");
                 }
             });
+        });
+    };
 
-            $top50 = $("#nav-top50");
-            $top50.click(function(){
-                $("#searchPage").hide();
-                $("#top50Page").show();
-                showTop50();
-            });
-        } else {
+    // Show the artists returned from the search query
+    var showArtists = function (query) {
+        $artists.empty();
+        Mbz.artistSearch(query, function ($artists) {
+            $artists.each(showArtist);
+        });
+    };
+
+    // Registers events and focuses the search field
+    var setUpSearch = function ($search) {
+        $search.focus().keyup(function (e) {
+            var query = $search.val();
+            if (e.keyCode === 13 && query.length > 0) {
+                showArtists(query);
+            }
+        });
+    };
+
+    // Cache all the static jQuery queries
+    var cache = function () {
+        $artists = $("#artists");
+    };
+
+    $(function () {
+        if (!$.support.cors) {
             alert("Sorry, your browser doesn't support CORS.");
+        } else {
+            setUpSearch($("#search > input"));
+            cache();
         }
     });
 });
