@@ -2,3 +2,6 @@
 *.un~
 *.settings
 *.swp
+.sass-cache
+*.orig
+frontend/build
