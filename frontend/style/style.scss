@@ -94,6 +94,17 @@ header {
    }
 }
 
+#status {
+    background-color: white;
+    width: 896px;
+    position: fixed;
+    top: 0;
+    color: black;
+    height: 31px;
+    text-align: center;
+    display: none;
+    z-index: 10;
+}
 
 #search {
    padding: 8px 16px 12px;
@@ -132,17 +143,23 @@ header {
       margin-right: 24px;
    }
    
-   .image {
+   .default-img {
       border-radius: 4px 0 0 4px;
       width: 68px;
+      position: absolute;
       height: 68px;
       float: left;
       background: {
+         image: url("/img/noartistimg.jpg");
          repeat: no-repeat;
          position: center;
-         size: auto 100%;
+         size: 100%;
       }
    }
+
+   .artist-img {
+      @extend .default-img;
+    }
 
    .text {
       width: 352px;
