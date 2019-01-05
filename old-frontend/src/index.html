@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<title>RIAA Radar</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<link href="favicon.ico" rel="icon"> 
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<style>
+   body {
+      padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+   }
+</style>
+<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar navbar-fixed-top">
+   <div class="navbar-inner">
+      <div class="container">
+         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+         </a>
+         <a class="brand" href="#">RIAA Radar</a>
+         <div class="nav-collapse">
+            <ul class="nav">
+               <li id="nav-search" class="active"><a href="#search">Search</a></li><li style="text-decoration: line-through;"><a href="#bigfour">The Big Four</a></li><li id="nav-top50"><a href="#top50">Top 50</a></li>
+            </ul>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!-- CONTAINER -->
+<div class="container">
+   <div id="searchPage">
+      <div class="row">
+         <div class="span6">
+            <div id="search" class="input-append">
+               <input type="text" class="span4" placeholder="Enter an artist (e.g. Nine Inch Nails)"><button class="btn" type="button">Search</button>
+            </div>
+         </div>
+         <div class="span6">
+            <h1>Welcome to RIAA Radar!</h1>
+            <p>This website is guaranteed to be unstable. Report all problems <a href="http://github.com/frelsi/riaaradar">to the GitHub</a>.</p>
+         </div>
+      </div>
+      <div id="results"></div>
+   </div>
+
+   <div id="top50Page">
+       <table class="tabe table-striped"></table>
+   </div>
+</div>
+
+<!-- SCRIPTS -->
+<script data-main="js/main" src="js/require-jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.masonry.min.js"></script>
+
+   </body>
+</html>
